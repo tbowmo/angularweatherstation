@@ -1,3 +1,25 @@
-<h1>
-  {{title}}
-</h1>
+<div id="cnt">
+  <div id="clockApp">
+      <div class="sensor s2">
+        <div class="value">--</div>
+        <div class="label">Vejrudsigt for Veddum Danmark</div>
+      </div>
+      <div class="sensor s2">
+        <div class="value">{{time}}</div>
+        <div class="label">{{date}}</div>
+      </div>
+      <sensor id="11" type="0" label="Udensørs" unit="&deg;C" size="6"></sensor>
+      <sensor id="11" type="1" label="Udendørs" unit="RH%" size="6"></sensor>
+      <sensor id="11" type="4" label="Baro" size="6"></sensor>
+      <sensor id="10" type="0" label="Stuen" unit="&deg;C"></sensor>
+      <sensor id="10" type="1" label="Stuen" unit="RH%"></sensor>
+  </div>
+<div id="mainApp">
+<router-outlet></router-outlet>
+</div>
+<div class="clearboth">
+  <div class="sensor s6 menu" *ngFor="let menu of menuLinks">
+    <div class="value"><a routerLink="/{{menu.target}}" [queryParams]="menu.params">{{menu.label}}</a></div>
+  </div>
+</div>
+</div>
