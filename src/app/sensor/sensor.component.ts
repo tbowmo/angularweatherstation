@@ -10,15 +10,15 @@ import { Sensor } from '../backend-message';
 })
 
 export class SensorComponent implements OnInit, OnDestroy {
-  @Input() id : number;
-  @Input() type : number = 2;
-  @Input() label : string = "N/A";
-  @Input() size : number = 4;
-  @Input() unit : string = "N/A";
-  value : number = 0;
-  errorMessage : any;
+  @Input() id: number;
+  @Input() type = 2;
+  @Input() label = 'N/A';
+  @Input() size = 4;
+  @Input() unit = 'N/A';
+  value = 0;
+  errorMessage: any;
   ss : any;
-  constructor (private sensorService : SensorService) { }
+  constructor (private sensorService: SensorService) { }
 
   ngOnInit() {
       this.ss = this.sensorService.sensor(this.id, this.type)
@@ -29,12 +29,12 @@ export class SensorComponent implements OnInit, OnDestroy {
     this.ss.unsubscribe();
   }
 
-  handleSensor(message : any) {
-    if (message[0] != undefined) {
+  handleSensor(message: any) {
+    if (message[0] !== undefined) {
       this.value = +message[0].last;
     } else {
       message = message as Sensor;
-      if (message.nodeId == this.id && message.subType == this.type) {
+      if (message.nodeId === this.id && message.subType === this.type) {
         this.value = +message.payload;
       }
     }

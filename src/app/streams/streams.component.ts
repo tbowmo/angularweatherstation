@@ -25,7 +25,7 @@ export class StreamsComponent implements OnInit {
   ngOnInit() {
 
     this.sub = this.route.queryParams.subscribe(params => {
-      let device = params['device'];
+      const device = params['device'];
       this.streamService.getStreams(device || 'audio')
         .subscribe(
             streams => this.handledata(streams),
@@ -50,8 +50,8 @@ export class StreamsComponent implements OnInit {
      }
 
      x.then(() => {
-         console.log("playing " + streamData.friendly );
-         this.router.navigateByUrl("/dashboard");
+         console.log('playing ' + streamData.friendly );
+         this.router.navigateByUrl('/dashboard');
      });
   }
 }

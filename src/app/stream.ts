@@ -6,7 +6,7 @@ export class Stream {
     extra : string;
     media : string;
     xmlid: string;
-    tv:string;
-    start:string;
-    stop:string;
+    tv: string;
+    start: string;
+    stop: string;
 }

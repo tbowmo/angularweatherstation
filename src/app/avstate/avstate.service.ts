@@ -6,32 +6,32 @@ import 'rxjs/add/operator/map';
 import { Conf } from '../configuration';
 
 export interface IAvstate {
-  func : string;
-  status : {
-    scene : string;
-  }
+  func: string;
+  status: {
+    scene: string;
+  };
 }
 
 @Injectable()
 export class AvstateService {
-  serverUrl : string = "https://juletraesfoden.dk/node/avstate";
-  constructor(private http : Http) { }
-  getState() : Observable<IAvstate> {
+  serverUrl = 'https://juletraesfoden.dk/node/avstate';
+  constructor(private http: Http) { }
+  getState(): Observable<IAvstate> {
     return this.http.get(this.serverUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
-  private extractData(res: Response) : IAvstate {
-    let data = res.json();
+  private extractData(res: Response): IAvstate {
+    const data = res.json();
     return data;
   }
 
   private handleError(error: Response | any) {
-    let errMsg : string;
+    let errMsg: string;
     if (error instanceof Response) {
         const body = error.json() || '';
-        const err= body.error || JSON.stringify(body);
+        const err = body.error || JSON.stringify(body);
         errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
         errMsg = error.message ? error.message : error.toString();

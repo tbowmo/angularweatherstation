@@ -7,18 +7,18 @@ import { Stream} from './stream';
 import { ChromeStatus } from './chrome-status';
 @Injectable()
 export class StreamService {
-    private streamUrl = "https://juletraesfoden.dk/chrome/";
+    private streamUrl = 'https://juletraesfoden.dk/chrome/';
     constructor (private http: Http) {}
 
-    getStreams(type:string) : Observable<Stream[]> {
-        let url = this.streamUrl + type + "/list";
+    getStreams(type: string) : Observable<Stream[]> {
+        const url = this.streamUrl + type + '/list';
         return this.http.get(url)
                         .map(this.extractData)
                         .catch(this.handleError);
     }
 
-    private extractData(res:Response) {
-        let body = res.json();
+    private extractData(res: Response) {
+        const body = res.json();
         return body || {};
     }
 
@@ -26,7 +26,7 @@ export class StreamService {
         let errMsg : string;
         if (error instanceof Response) {
             const body = error.json() || '';
-            const err= body.error || JSON.stringify(body);
+            const err = body.error || JSON.stringify(body);
             errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
         } else {
             errMsg = error.message ? error.message : error.toString();
@@ -36,13 +36,13 @@ export class StreamService {
         return Observable.throw(errMsg);
     }
 
-    public playStream(stream:Stream, device:string) {
-        let url = this.streamUrl + device + "/play/" + stream.id;
+    public playStream(stream: Stream, device: string) {
+        const url = this.streamUrl + device + '/play/' + stream.id;
         return this.http.get(url).toPromise();
     }
 
-    public getStatus(device:string) : Observable<ChromeStatus> {
-        let url = this.streamUrl + device + "/status";
+    public getStatus(device: string) : Observable<ChromeStatus> {
+        const url = this.streamUrl + device + '/status';
         return this.http.get(url)
                         .map(this.extractData)
                         .catch(this.handleError);

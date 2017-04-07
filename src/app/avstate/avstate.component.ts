@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AvstateService, IAvstate} from './avstate.service'
+import { AvstateService, IAvstate} from './avstate.service';
+
 @Component({
   selector: 'app-avstate',
   templateUrl: './avstate.component.html',
@@ -8,9 +9,9 @@ import { AvstateService, IAvstate} from './avstate.service'
 })
 
 export class AvstateComponent implements OnInit {
-  avstate : string;
-  error : any;
-  constructor(private avstateService : AvstateService) { }
+  avstate: string;
+  error: any;
+  constructor(private avstateService: AvstateService) { }
 
   ngOnInit() {
     this.avstateService.getState()
@@ -18,7 +19,7 @@ export class AvstateComponent implements OnInit {
                    error => this.error = error);
   }
 
-  updateState(state : IAvstate) {
+  updateState(state: IAvstate) {
     this.avstate = state.status.scene;
   }
 }

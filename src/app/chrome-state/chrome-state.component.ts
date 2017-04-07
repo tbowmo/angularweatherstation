@@ -8,16 +8,16 @@ import { StreamService } from '../stream.service';
   providers: [StreamService]
 })
 export class ChromeStateComponent implements OnInit {
-  errorMessage : any;
-  artist : string;
-  title : string;
-  constructor(private streamService : StreamService ) {}
+  errorMessage: any;
+  artist: string;
+  title: string;
+  constructor(private streamService: StreamService ) {}
 
   ngOnInit() {
       this.streamService.getStatus('video').subscribe(state => this.handleState(state), error => this.errorMessage);
   }
 
-  handleState(state:ChromeStatus) {
+  handleState(state: ChromeStatus) {
       this.title = state.title;
       this.artist = state.chromeApp;
   }

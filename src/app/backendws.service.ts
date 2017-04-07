@@ -14,8 +14,8 @@ export class BackendwsService {
   constructor() { }
 
   public create() : Subject<MessageEvent> {
-    let ws = new WebSocket("wss://juletraesfoden.dk/node/dashboard");
-    let observable = Observable.create(
+    const ws = new WebSocket('wss://juletraesfoden.dk/node/dashboard');
+    const observable = Observable.create(
       (obs: Observer<MessageEvent>) => {
         ws.onmessage = obs.next.bind(obs);
         ws.onerror = obs.error.bind(obs);
@@ -25,7 +25,7 @@ export class BackendwsService {
       }
     );
 
-    let observer = {
+    const observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify(data));

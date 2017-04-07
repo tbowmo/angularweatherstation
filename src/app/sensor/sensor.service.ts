@@ -8,33 +8,27 @@ import { Conf } from '../configuration';
 import { BackendwsService } from '../backendws.service';
 import { BackendMessage, Sensor } from '../backend-message';
 
-export interface sensor {
-  id : number;
-  type : number;
-  value : string | number;
-}
-
 @Injectable()
 export class SensorService {
-  serverUrl : string = "https://juletraesfoden.dk/node/environment/";
+  serverUrl = 'https://juletraesfoden.dk/node/environment/';
   private _sensors: Subject<Sensor>;
-  connection : any;
-  test : Sensor;
+  connection: any;
+  test: Sensor;
 
-  constructor (private http: Http, private backend : BackendwsService) {
+  constructor (private http: Http, private backend: BackendwsService) {
     this._sensors = new Subject();
     this.connection = this.backend.connect()
           .subscribe(message => this.testFunc(message));
   }
 
-  public sensor(id, type) : Observable<Sensor>  {
-    let url = this.serverUrl + '?node=' + id.toString() + "&subType=" + type.toString();
+  public sensor(id, type): Observable<Sensor>  {
+    const url = this.serverUrl + '?node=' + id.toString() + '&subType=' + type.toString();
     this.http.get(url).toPromise().then(
       response => {
-        let data = response.json();
+        const data = response.json();
         this._sensors.next(data);
       }
-    )
+    );
     return this._sensors.asObservable();
   }
 
@@ -48,28 +42,29 @@ export class SensorService {
                       .catch(this.handleError);
   }
 */
-  private extractData(res:Response) {
-      let body = res.json();
+  private extractData(res: Response) {
+      const body = res.json();
       console.log(body);
-      if (body[0] != undefined)
+      if (body[0] !== undefined) {
           return body[0].last;
-      else
+      } else {
           return 0;
+      }
   }
 
-  testFunc(message:any) {
-    let t : BackendMessage = JSON.parse(message.data);
-    if (t.func == "sensormsg") {
-      let test: Sensor = t.status as Sensor;
+  testFunc(message: any) {
+    const t: BackendMessage = JSON.parse(message.data);
+    if (t.func === 'sensormsg') {
+      const test: Sensor = t.status as Sensor;
       this._sensors.next(test);
     }
   }
 
   private handleError (error: Response | any) {
-      let errMsg : string;
+      let errMsg: string;
       if (error instanceof Response) {
           const body = error.json() || '';
-          const err= body.error || JSON.stringify(body);
+          const err = body.error || JSON.stringify(body);
           errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
       } else {
           errMsg = error.message ? error.message : error.toString();
