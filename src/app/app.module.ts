@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChromeStateComponent } from './chrome-state/chrome-state.component';
 import { AvstateComponent } from './avstate/avstate.component';
 import { BackendwsService } from './backendws.service';
+import { SensorService } from './sensor/sensor.service';
+import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,7 @@ import { BackendwsService } from './backendws.service';
     DashboardComponent,
     ChromeStateComponent,
     AvstateComponent,
+    ToggleFullScreenDirective,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,7 @@ import { BackendwsService } from './backendws.service';
     {path: 'streams', component : StreamsComponent}
   ])
   ],
-  providers: [BackendwsService],
+  providers: [BackendwsService, SensorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

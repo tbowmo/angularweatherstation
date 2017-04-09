@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AvstateService, IAvstate} from './avstate.service';
+import { AvstateService} from './avstate.service';
+import { AVState } from '../backend-message';
 
 @Component({
   selector: 'app-avstate',
@@ -19,7 +20,7 @@ export class AvstateComponent implements OnInit {
                    error => this.error = error);
   }
 
-  updateState(state: IAvstate) {
+  updateState(state: AVState) {
     this.avstate = state.status.scene;
   }
 }

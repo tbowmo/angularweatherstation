@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { menuLink } from './menuLink';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { MenuLink } from './menu-link';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   ticks = 0;
   time = '00:00';
   date = '00:00';
-  menuLinks : menuLink[];
+  menuLinks: MenuLink[];
   ngOnInit() {
     this.menuLinks = [
       {label: 'Hjem', target: 'dashboard', params: ''},
@@ -21,13 +21,13 @@ export class AppComponent {
     this.date = formatDate(new Date());
     const timer = Observable.timer(0, 1000);
     timer.subscribe(() => {
-
     });
   }
 }
 
-function formatDate(date: Date, format : string = 'dddd dd. MMMM yyyy', utc : Boolean = false) {
-    const MMMM = ['\x00', 'Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+function formatDate(date: Date, format: string = 'dddd dd. MMMM yyyy', utc: Boolean = false) {
+    const MMMM = ['\x00', 'Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni',
+                          'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
     const MMM = ['\x01', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const dddd = ['\x02', 'Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
     const ddd = ['\x03', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -35,7 +35,9 @@ function formatDate(date: Date, format : string = 'dddd dd. MMMM yyyy', utc : Bo
     function ii(i: number, len: number= 2) {
         let s = i + '';
         len = len || 2;
-        while (s.length < len) s = '0' + s;
+        while (s.length < len) {
+          s = '0' + s;
+        }
         return s;
     }
 
@@ -60,7 +62,7 @@ function formatDate(date: Date, format : string = 'dddd dd. MMMM yyyy', utc : Bo
     format = format.replace(/(^|[^\\])HH+/g, '$1' + ii(H));
     format = format.replace(/(^|[^\\])H/g, '$1' + H);
 
-    const h = H > 12 ? H - 12 : H == 0 ? 12 : H;
+    const h = H > 12 ? H - 12 : H === 0 ? 12 : H;
     format = format.replace(/(^|[^\\])hh+/g, '$1' + ii(h));
     format = format.replace(/(^|[^\\])h/g, '$1' + h);
 

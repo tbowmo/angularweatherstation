@@ -1,24 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { ChromeStatus } from '../chrome-status';
-import { StreamService } from '../stream.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChromeCastStatus } from '../chrome-cast-status';
+import { ChromeCastService } from '../chrome-cast.service';
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
-  selector: 'chromestate',
+  selector: 'app-chromestate',
   templateUrl: './chrome-state.component.html',
   styleUrls: ['./chrome-state.component.css'],
-  providers: [StreamService]
+  providers: [ChromeCastService]
 })
-export class ChromeStateComponent implements OnInit {
+
+export class ChromeStateComponent implements OnInit, OnDestroy {
   errorMessage: any;
-  artist: string;
-  title: string;
-  constructor(private streamService: StreamService ) {}
+  subscribeStream: Subscription;
+  status: ChromeCastStatus;
+  constructor(private streamService: ChromeCastService ) {}
 
   ngOnInit() {
-      this.streamService.getStatus('video').subscribe(state => this.handleState(state), error => this.errorMessage);
+      this.status = new ChromeCastStatus();
+      this.subscribeStream = this.streamService.getStatus().subscribe(state => this.handleState(state), error => this.errorMessage);
   }
 
-  handleState(state: ChromeStatus) {
-      this.title = state.title;
-      this.artist = state.chromeApp;
+  handleState(state: ChromeCastStatus) {
+    if (state.chromeApp !== 'None' && state.chromeApp !== 'Backdrop') {
+      this.status = state;
+    } else {
+      this.status.chromeApp = '';
+      this.status.title = '';
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscribeStream.unsubscribe();
   }
 }

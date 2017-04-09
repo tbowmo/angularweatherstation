@@ -1,30 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Http, Response} from '@angular/http';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { Conf } from '../configuration';
-
-export interface IAvstate {
-  func: string;
-  status: {
-    scene: string;
-  };
-}
+import { BackendwsService } from '../backendws.service';
+import { BackendMessage, AVState } from '../backend-message';
 
 @Injectable()
 export class AvstateService {
   serverUrl = 'https://juletraesfoden.dk/node/avstate';
-  constructor(private http: Http) { }
-  getState(): Observable<IAvstate> {
-    return this.http.get(this.serverUrl)
-                    .map(this.extractData)
-                    .catch(this.handleError);
+  private _avState: ReplaySubject<AVState>;
+  private connection: any;
+
+  constructor(private http: Http, private backendWsService: BackendwsService) {
+    this._avState = new ReplaySubject(1);
+    this.connection = this.backendWsService.connectAVState()
+            .subscribe(message => { this._avState.next(message); });
   }
 
-  private extractData(res: Response): IAvstate {
-    const data = res.json();
-    return data;
+  getState(): Observable<AVState> {
+    this.http.get(this.serverUrl).toPromise().then((result) => {
+      const data = result.json();
+      this._avState.next(data);
+    });
+
+    return this._avState.asObservable();
   }
 
   private handleError(error: Response | any) {

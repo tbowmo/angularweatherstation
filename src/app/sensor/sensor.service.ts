@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Rx';
+import { Subject, Subscription } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { Conf } from '../configuration';
@@ -10,54 +10,51 @@ import { BackendMessage, Sensor } from '../backend-message';
 
 @Injectable()
 export class SensorService {
-  serverUrl = 'https://juletraesfoden.dk/node/environment/';
+  private serverUrl = 'https://juletraesfoden.dk/node/environment/';
   private _sensors: Subject<Sensor>;
-  connection: any;
-  test: Sensor;
+  private connection: Subscription;
+  private sensorList: Sensor[];
 
   constructor (private http: Http, private backend: BackendwsService) {
     this._sensors = new Subject();
-    this.connection = this.backend.connect()
-          .subscribe(message => this.testFunc(message));
+    this.sensorList = new Array<Sensor>();
+    this.connection = this.backend.connectSensor()
+          .subscribe(message => this.backendReceiver(message));
   }
 
-  public sensor(id, type): Observable<Sensor>  {
-    const url = this.serverUrl + '?node=' + id.toString() + '&subType=' + type.toString();
-    this.http.get(url).toPromise().then(
-      response => {
-        const data = response.json();
-        this._sensors.next(data);
-      }
-    );
+  get sensorsStream(): Observable<Sensor> {
     return this._sensors.asObservable();
   }
 
-/*
-  getSensor() : Observable<Sensor> {
-      let url = this.serverUrl + '?node=' + id.toString() + "&subType=" + type.toString();
-
-
-      return this.http.get(url)
-                      .map(this.extractData)
-                      .catch(this.handleError);
-  }
-*/
-  private extractData(res: Response) {
-      const body = res.json();
-      console.log(body);
-      if (body[0] !== undefined) {
-          return body[0].last;
-      } else {
-          return 0;
-      }
-  }
-
-  testFunc(message: any) {
-    const t: BackendMessage = JSON.parse(message.data);
-    if (t.func === 'sensormsg') {
-      const test: Sensor = t.status as Sensor;
-      this._sensors.next(test);
+  public fetchSensor(id, type)  {
+    const url = this.serverUrl + '?node=' + id.toString() + '&subType=' + type.toString();
+    const sensor = this.ToHex(id) + this.ToHex(type);
+    if (this.sensorList[sensor] !== undefined) {
+      this._sensors.next(this.sensorList[sensor]);
+    } else {
+      this.http.get(url).toPromise().then(
+        response => {
+          const s: Sensor = new Sensor();
+          const data = response.json();
+          s.subType = type;
+          s.nodeId = id;
+          s.payload = data[0].last;
+          this.sensorList[sensor] = s;
+          this._sensors.next(s);
+        }
+      );
     }
+  }
+
+  private ToHex(i: number): string {
+    const str = Number(i).toString(16);
+    return str.length === 1 ? '0' + str : str;
+  }
+
+  backendReceiver(message: Sensor) {
+    const sensorid = this.ToHex(message.nodeId) + this.ToHex(message.subType);
+    this.sensorList[sensorid] = message;
+    this._sensors.next(message);
   }
 
   private handleError (error: Response | any) {

@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { StreamService } from '../stream.service';
-import { Stream } from '../stream';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ChromeCastService } from '../chrome-cast.service';
+import { ChromeCastStream } from '../chrome-cast-stream';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  template : `
+  template: `
   <div *ngFor="let streamData of streams" class="sensor s4" (click)="play(streamData)">
       <div class="value">{{streamData.friendly}}</div>
       <div class="label">{{streamData.tv}}</div>
   </div>
   `,
-  providers : [StreamService]
+  providers: [ChromeCastService]
 })
 
-export class StreamsComponent implements OnInit {
-  streams : Stream[];
-  errorMessage : any;
-  sub : any;
+export class StreamsComponent implements OnInit, OnDestroy {
+  streams: ChromeCastStream[];
+  errorMessage: any;
+  sub: any;
   constructor (
-    private streamService : StreamService,
-    private route : ActivatedRoute,
-    private router : Router) {}
+    private streamService: ChromeCastService,
+    private route: ActivatedRoute,
+    private router: Router) {}
 
   ngOnInit() {
 
@@ -33,7 +33,7 @@ export class StreamsComponent implements OnInit {
         });
   }
 
-  handledata(st : any) {
+  handledata(st: any) {
       this.streams = st;
   }
 
@@ -41,9 +41,9 @@ export class StreamsComponent implements OnInit {
     this.sub.unsubscribe();
   }
 
-  play(streamData: Stream) {
-    let x : any;
-     if (streamData.media == 'audio/mp3') {
+  play(streamData: ChromeCastStream) {
+    let x: any;
+     if (streamData.media === 'audio/mp3') {
          x = this.streamService.playStream(streamData, 'audio');
      } else {
          x = this.streamService.playStream(streamData, 'video');

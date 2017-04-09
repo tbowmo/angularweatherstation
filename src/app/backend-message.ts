@@ -1,17 +1,21 @@
-export interface Sensor {
-  payload : string;
-  radio : string;
-  nodeId : number;
-  childSensorId : number;
-  messageType : number;
-  ack : number;
-  subType : number;
+export class Sensor {
+  payload: string;
+  radio: string;
+  nodeId: number;
+  childSensorId: number;
+  messageType: number;
+  ack: number;
+  subType: number;
 }
 
-export interface Chrome {
-
-}
 export interface BackendMessage {
-  func : string;
-  status : object;
+  func: string;
+  status: object;
+}
+
+export interface AVState {
+  func: string;
+  status: {
+    scene: string;
+  };
 }
