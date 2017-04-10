@@ -16,7 +16,11 @@ export class AppComponent implements OnInit {
     this.menuLinks = [
       {label: 'Hjem', target: 'dashboard', params: ''},
       {label: 'Radio', target : 'streams', params: {device: 'audio'}},
-      {label: 'TV', target: 'streams', params: {device: 'video'}}];
+      {label: 'TV', target: 'streams', params: {device: 'video'}},
+      {label: 'Scene', target:'scene', params:''},
+      {label: '', target:'', params:''},
+      {label: '', target:'', params:''},
+    ];
     this.time = formatDate(new Date(), 'HH:mm');
     this.date = formatDate(new Date());
     const timer = Observable.timer(0, 1000);

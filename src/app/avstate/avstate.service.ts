@@ -4,24 +4,26 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { Conf } from '../configuration';
+import { ConfService } from '../conf.service';
 import { BackendwsService } from '../backendws.service';
 import { BackendMessage, AVState } from '../backend-message';
 
 @Injectable()
 export class AvstateService {
-  serverUrl = 'https://juletraesfoden.dk/node/avstate';
   private _avState: ReplaySubject<AVState>;
   private connection: any;
 
-  constructor(private http: Http, private backendWsService: BackendwsService) {
+  constructor(
+    private http: Http,
+    private backendWsService: BackendwsService,
+    private conf: ConfService) {
     this._avState = new ReplaySubject(1);
     this.connection = this.backendWsService.connectAVState()
             .subscribe(message => { this._avState.next(message); });
   }
 
   getState(): Observable<AVState> {
-    this.http.get(this.serverUrl).toPromise().then((result) => {
+    this.http.get(this.conf.avstateUrl).toPromise().then((result) => {
       const data = result.json();
       this._avState.next(data);
     });

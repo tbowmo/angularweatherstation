@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer, Subscription } from 'rxjs/Rx';
 import { Sensor, AVState, BackendMessage } from './backend-message';
 import { ChromeCastStatus} from './chrome-cast-status';
+import { ConfService } from './conf.service';
 
 @Injectable()
 export class BackendwsService {
@@ -11,7 +12,7 @@ export class BackendwsService {
   private ChromeSubject: Subject<ChromeCastStatus>;
   private AVStateSubject: Subject<AVState>;
 
-  constructor() {
+  constructor(private conf: ConfService) {
     this.subscription = this.connect().subscribe(
       message => this.receive(message)
     );
@@ -64,7 +65,7 @@ export class BackendwsService {
 
 
   private connect(): Subject<MessageEvent> {
-    const ws = new WebSocket('wss://juletraesfoden.dk/node/dashboard');
+    const ws = new WebSocket(this.conf.socketUrl);
 
     const observable = Observable.create(
       (obs: Observer<MessageEvent>) => {

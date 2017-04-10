@@ -13,6 +13,8 @@ import { AvstateComponent } from './avstate/avstate.component';
 import { BackendwsService } from './backendws.service';
 import { SensorService } from './sensor/sensor.service';
 import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
+import { SceneComponent } from './scene/scene.component';
+import { ConfService } from './conf.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
     ChromeStateComponent,
     AvstateComponent,
     ToggleFullScreenDirective,
+    SceneComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,10 +34,11 @@ import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
     RouterModule.forRoot([
     {path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     {path: 'dashboard',  component : DashboardComponent},
-    {path: 'streams', component : StreamsComponent}
+    {path: 'streams', component : StreamsComponent},
+    {path: 'scene', component : SceneComponent}
   ])
   ],
-  providers: [BackendwsService, SensorService],
+  providers: [BackendwsService, SensorService, ConfService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

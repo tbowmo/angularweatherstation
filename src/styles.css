@@ -66,10 +66,10 @@ a:hover { text-decoration: none; color: #003366; }
 	width:338px;
 }
 .s5 {
-	width:196px;
+	width:200px;
 }
 .s5_1 {
-	width: 198px;
+	width: 202px;
 }
 
 .s1_5 {
@@ -85,4 +85,8 @@ a:hover { text-decoration: none; color: #003366; }
 }
 #mainApp {
 	height: 363px;
+}
+
+.Off {
+	color: grey;
 }

@@ -1,4 +1,12 @@
-# Dashboard
+# Weatherstation dashboard
+
+This is a weatherstation / dashboard, meant for tablet view. It relies
+heavily on different backends, mostly node-red, which publishes a couple of
+interfaces, both via websocket, and rest interface, to interrogate backend
+for sensorvalues, network streams for chromecast etc.
+
+Probably not usefull for most people, but kept here as an example..
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 

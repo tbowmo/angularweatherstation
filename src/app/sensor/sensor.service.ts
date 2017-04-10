@@ -4,18 +4,20 @@ import { Observable } from 'rxjs/Observable';
 import { Subject, Subscription } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { Conf } from '../configuration';
+import { ConfService } from '../conf.service';
 import { BackendwsService } from '../backendws.service';
 import { BackendMessage, Sensor } from '../backend-message';
 
 @Injectable()
 export class SensorService {
-  private serverUrl = 'https://juletraesfoden.dk/node/environment/';
   private _sensors: Subject<Sensor>;
   private connection: Subscription;
   private sensorList: Sensor[];
 
-  constructor (private http: Http, private backend: BackendwsService) {
+  constructor (
+    private http: Http,
+    private backend: BackendwsService,
+    private conf: ConfService) {
     this._sensors = new Subject();
     this.sensorList = new Array<Sensor>();
     this.connection = this.backend.connectSensor()
@@ -27,7 +29,7 @@ export class SensorService {
   }
 
   public fetchSensor(id, type)  {
-    const url = this.serverUrl + '?node=' + id.toString() + '&subType=' + type.toString();
+    const url = this.conf.sensorUrl + '?node=' + id.toString() + '&subType=' + type.toString();
     const sensor = this.ToHex(id) + this.ToHex(type);
     if (this.sensorList[sensor] !== undefined) {
       this._sensors.next(this.sensorList[sensor]);
