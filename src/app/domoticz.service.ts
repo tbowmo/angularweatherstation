@@ -3,43 +3,51 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { ConfService } from '../conf.service';
+import { ConfService } from './conf.service';
 
-export interface Scene {
+export interface Device {
   Name: string;
   idx: number;
   Status: string;
   HardwareName: string;
+  Humidity: number;
+  Temp: number;
+  HumidityStatus: string;
 }
 
 interface domoticz {
   ActTime: string;
-  result : Scene[]
+  result : Device[]
 }
 
 @Injectable()
-export class SceneService {
+export class DomoticzService {
   private err: any;
+  private hardwareName: string;
+
   constructor(
     private http: Http,
     private conf: ConfService) { }
 
-  getScenes(): Observable<Scene[]> {
-      return this.http.get(this.conf.sceneUrl + 'plan=2')
-                      .map(this.extractScenes)
-                      .catch(this.handleError);
+  getDomoticzPlan(planId: number, hardwareName: string): Observable<Device[]> {
+    this.hardwareName = hardwareName;
+    console.log(this.hardwareName);
+    return this.http.get(this.conf.sceneUrl + 'plan=' + planId)
+                    .map((res) => this.extractDevices(res))
+                    .catch(this.handleError);
   }
 
-  private extractScenes(res: Response) {
+  private extractDevices(res: Response) {
       const body: domoticz = res.json();
-      let scenes:Scene[] = Array<Scene>();
+      let devices:Device[] = Array<Device>();
+      console.log(this.hardwareName);
       body.result.forEach(s => {
-        if (s.HardwareName == 'harmony') {
-          s.Name = s.Name.substr(6);
-          scenes.push(s);
+        console.log(this.hardwareName);
+        if (s.HardwareName === this.hardwareName) {
+          devices.push(s);
         }
       })
-      return scenes || [{}];
+      return devices || [{}];
   }
 
   private handleError (error: Response | any) {
@@ -55,7 +63,8 @@ export class SceneService {
       console.error(errMsg);
       return Observable.throw(errMsg);
   }
-  switchScene(scene:Scene) {
+
+  switchScene(scene:Device) {
     const url = this.conf.sceneUrl + 'switch=' + scene.idx + '&state=On';
     return this.http.get(url).toPromise();
   }

@@ -15,6 +15,9 @@ import { SensorService } from './sensor/sensor.service';
 import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
 import { SceneComponent } from './scene/scene.component';
 import { ConfService } from './conf.service';
+import { HouseComponent } from './house/house.component';
+import { TruncatePipe } from './truncate.pipe';
+import { TruncateHeadPipe } from './truncate-head.pipe';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { ConfService } from './conf.service';
     AvstateComponent,
     ToggleFullScreenDirective,
     SceneComponent,
+    HouseComponent,
+    TruncatePipe,
+    TruncateHeadPipe,
   ],
   imports: [
     BrowserModule,
@@ -33,9 +39,10 @@ import { ConfService } from './conf.service';
     HttpModule,
     RouterModule.forRoot([
     {path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    {path: 'dashboard',  component : DashboardComponent},
-    {path: 'streams', component : StreamsComponent},
-    {path: 'scene', component : SceneComponent}
+    {path: 'dashboard',  component: DashboardComponent},
+    {path: 'streams', component: StreamsComponent},
+    {path: 'scene', component: SceneComponent},
+    {path: 'house', component: HouseComponent}
   ])
   ],
   providers: [BackendwsService, SensorService, ConfService ],

@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
       {label: 'Radio', target : 'streams', params: {device: 'audio'}},
       {label: 'TV', target: 'streams', params: {device: 'video'}},
       {label: 'Scene', target:'scene', params:''},
-      {label: '', target:'', params:''},
+      {label: 'Huset', target:'house', params:''},
       {label: '', target:'', params:''},
     ];
     this.time = formatDate(new Date(), 'HH:mm');
