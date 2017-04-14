@@ -1,5 +1,5 @@
 export class MenuLink {
     label: string;
-    target: string;
-    params: {};
+    target: string[];
+    css:string;
 }

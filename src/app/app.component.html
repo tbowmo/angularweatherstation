@@ -19,7 +19,7 @@
 </div>
 <div class="clearboth">
   <div class="sensor s6 menu" *ngFor="let menu of menuLinks">
-    <div class="value"><a routerLink="/{{menu.target}}" [queryParams]="menu.params">{{menu.label}}</a></div>
+    <div class="value"><a [routerLinkActive]="'active'" [routerLink]="menu.target">{{menu.label}}</a></div>
   </div>
 </div>
 </div>

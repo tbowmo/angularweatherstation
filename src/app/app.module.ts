@@ -18,6 +18,7 @@ import { ConfService } from './conf.service';
 import { HouseComponent } from './house/house.component';
 import { TruncatePipe } from './truncate.pipe';
 import { TruncateHeadPipe } from './truncate-head.pipe';
+import { TimeoutService } from './timeout.service';
 
 @NgModule({
   declarations: [
@@ -40,12 +41,12 @@ import { TruncateHeadPipe } from './truncate-head.pipe';
     RouterModule.forRoot([
     {path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     {path: 'dashboard',  component: DashboardComponent},
-    {path: 'streams', component: StreamsComponent},
+    {path: 'streams/:device', component: StreamsComponent},
     {path: 'scene', component: SceneComponent},
     {path: 'house', component: HouseComponent}
   ])
   ],
-  providers: [BackendwsService, SensorService, ConfService ],
+  providers: [BackendwsService, SensorService, ConfService, TimeoutService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

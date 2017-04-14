@@ -90,3 +90,9 @@ a:hover { text-decoration: none; color: #003366; }
 .Off {
 	color: grey;
 }
+
+a.active, a.active:visited {
+	color: darkorange;
+}
+
+a, a:visited { color: grey;}

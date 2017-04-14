@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   template: `
   <div *ngFor="let streamData of streams" class="sensor s4" (click)="play(streamData)">
       <div class="value">{{streamData.friendly}}</div>
-      <div class="label">{{streamData.tv | truncate : 25}}</div>
+      <div class="label">{{streamData.tv | truncate : 25: '.-.'}}</div>
   </div>
   `,
   providers: [ChromeCastService]
@@ -17,6 +17,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
   streams: ChromeCastStream[];
   errorMessage: any;
   sub: any;
+  private device: string;
+
   constructor (
     private streamService: ChromeCastService,
     private route: ActivatedRoute,
@@ -24,9 +26,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.sub = this.route.queryParams.subscribe(params => {
-      const device = params['device'];
-      this.streamService.getStreams(device || 'audio')
+    this.sub = this.route.params.subscribe(params => {
+      this.device = params['device'];
+
+      this.streamService.getStreams(this.device || 'audio')
         .subscribe(
             streams => this.handledata(streams),
             error => this.errorMessage = error);
@@ -42,16 +45,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   play(streamData: ChromeCastStream) {
-    let x: any;
-     if (streamData.media === 'audio/mp3') {
-         x = this.streamService.playStream(streamData, 'audio');
-     } else {
-         x = this.streamService.playStream(streamData, 'video');
-     }
 
-     x.then(() => {
+    this.streamService.playStream(streamData, this.device)
+      .then(() => {
          console.log('playing ' + streamData.friendly );
          this.router.navigateByUrl('/dashboard');
-     });
+       });
   }
 }

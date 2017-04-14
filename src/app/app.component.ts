@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MenuLink } from './menu-link';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +13,16 @@ export class AppComponent implements OnInit {
   time = '00:00';
   date = '00:00';
   menuLinks: MenuLink[];
+  constructor(private router: Router) {}
+
   ngOnInit() {
     this.menuLinks = [
-      {label: 'Hjem', target: 'dashboard', params: ''},
-      {label: 'Radio', target : 'streams', params: {device: 'audio'}},
-      {label: 'TV', target: 'streams', params: {device: 'video'}},
-      {label: 'Scene', target:'scene', params:''},
-      {label: 'Huset', target:'house', params:''},
-      {label: '', target:'', params:''},
+      {label: 'Hjem', target: ['dashboard'], css:"active"},
+      {label: 'Radio', target : ['streams', 'audio'], css:""},
+      {label: 'TV', target: ['streams', 'video'], css:""},
+      {label: 'Scene', target: ['scene'], css:""},
+      {label: 'Huset', target: ['house'], css:""},
+      {label: '', target:[''], css:""},
     ];
     this.time = formatDate(new Date(), 'HH:mm');
     this.date = formatDate(new Date());
