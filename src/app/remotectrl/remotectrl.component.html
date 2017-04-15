@@ -1,0 +1,4 @@
+<div *ngFor="let button of buttons" class="sensor s6" (click)="activate(button)">
+  <div class="value" *ngIf="!button.icon">{{button.text}}</div>
+  <div class="value" *ngIf="button.icon"><img src="{{button.icon}}"></div>
+</div>

@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   template: `
   <div *ngFor="let streamData of streams" class="sensor s4" (click)="play(streamData)">
       <div class="value">{{streamData.friendly}}</div>
-      <div class="label">{{streamData.tv | truncate : 25: '.-.'}}</div>
+      <div class="label">{{streamData.tv | truncate : 30 }}</div>
   </div>
   `,
   providers: [ChromeCastService]

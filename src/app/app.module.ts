@@ -19,6 +19,7 @@ import { HouseComponent } from './house/house.component';
 import { TruncatePipe } from './truncate.pipe';
 import { TruncateHeadPipe } from './truncate-head.pipe';
 import { TimeoutService } from './timeout.service';
+import { RemotectrlComponent } from './remotectrl/remotectrl.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { TimeoutService } from './timeout.service';
     HouseComponent,
     TruncatePipe,
     TruncateHeadPipe,
+    RemotectrlComponent,
   ],
   imports: [
     BrowserModule,

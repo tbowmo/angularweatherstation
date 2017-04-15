@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MenuLink } from './menu-link';
 import { Router } from '@angular/router';
+declare let require: any;
+const screenfull = require('screenfull');
 
 @Component({
   selector: 'app-root',
@@ -13,6 +15,7 @@ export class AppComponent implements OnInit {
   time = '00:00';
   date = '00:00';
   menuLinks: MenuLink[];
+  showfullscreen = true;
   constructor(private router: Router) {}
 
   ngOnInit() {
@@ -29,6 +32,14 @@ export class AppComponent implements OnInit {
     const timer = Observable.timer(0, 1000);
     timer.subscribe(() => {
     });
+  }
+
+  gofullscreen() {
+    this.showfullscreen = false;
+    screenfull.toggle();
+  }
+  switchRoute(menu: MenuLink) {
+    this.router.navigate(menu.target);
   }
 }
 

@@ -1,4 +1,4 @@
-body {
+body, html {
 	background: #000;
 }
 
@@ -6,19 +6,17 @@ body {
   clear:both;
 }
 div#cnt {
-	width: 1032px;
+	width: 1280px;
   margin: 0 auto;
   text-align: center;
 	background-color: black;
 }
 
-a, a:visited { text-decoration: none; color: #336699; }
-a:hover { text-decoration: none; color: #003366; }
-
 .sensor {
 	float: left;
 	margin: 2px;
-	border: 1px solid #666;
+  border: 1px solid #666;
+	box-sizing: border-box;
 }
 
 .label {
@@ -37,12 +35,12 @@ a:hover { text-decoration: none; color: #003366; }
 	height: 90px;
 	padding: 10px;
 	line-height: 75px;
-	font-size: 40px;
+	font-size: 50px;
 	color: darkorange;
 }
 
 .menu {
-	height:50px;
+	height:60px;
 }
 
 .menu .value {
@@ -51,29 +49,28 @@ a:hover { text-decoration: none; color: #003366; }
 	height: initial;
 	color: grey;
 }
-.s6 {
-  width:166px;
-}
 
-.s4 {
-	width:252px;
-}
-
-.s2 {
-	width:510px;
-}
-.s3 {
-	width:338px;
-}
-.s5 {
-	width:200px;
-}
-.s5_1 {
-	width: 202px;
+.s1 {
+	width:1270px;
 }
 
 .s1_5 {
-	width: 768px;
+	width: 950px;
+}
+
+.s2 {
+	width:632px;
+}
+.s3 {
+	width:420px;
+}
+
+.s4 {
+	width:315px;
+}
+
+.s6 {
+  width:208px;
 }
 
 .v2 {
@@ -91,8 +88,9 @@ a:hover { text-decoration: none; color: #003366; }
 	color: grey;
 }
 
+a, a:visited { text-decoration: none; color: grey; }
+a:hover { text-decoration: none; color: grey; }
+
 a.active, a.active:visited {
 	color: darkorange;
 }
-
-a, a:visited { color: grey;}
