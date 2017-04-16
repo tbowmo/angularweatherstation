@@ -1,4 +1,3 @@
-<div *ngFor="let button of buttons" class="sensor s6" (click)="activate(button)">
-  <div class="value" *ngIf="!button.icon">{{button.text}}</div>
-  <div class="value" *ngIf="button.icon"><img src="{{button.icon}}"></div>
+<div *ngFor="let button of buttons; let i = index;" class="sensor s6" (click)="activate(button, i)">
+  <div class="value"><img src="assets/spacer.png" class="valueicon" [ngStyle]="{'left':button.left, 'background':button.background }"></div>
 </div>

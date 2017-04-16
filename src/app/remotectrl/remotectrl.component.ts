@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
-interface Button {
-  text: string;
-  icon: string;
-  activity:number;
-}
-
+import { Observable } from 'rxjs/Observable';
+import { Subscription} from 'rxjs/Subscription';
+import { Button, IconType } from './button';
+import { ChromeCastService } from '../chrome-cast.service';
 @Component({
   selector: 'app-remotectrl',
   templateUrl: './remotectrl.component.html',
@@ -13,31 +10,68 @@ interface Button {
 })
 
 export class RemotectrlComponent implements OnInit, OnDestroy {
-  buttons:Button[];
-  constructor() { }
+  buttons: Button[];
+  private chromeSubscription: Subscription;
+  constructor(private chrome: ChromeCastService) { }
 
   ngOnInit() {
     this.buttons = Array<Button>();
-    this.buttons.push({text:"Vol+", icon:"assets/Media-Controls-Volume-Down-icon.png", activity:10});
-    this.buttons.push({text:"Vol-", icon:"assets/Media-Controls-Volume-Up-icon.png", activity:10});
-    this.buttons.push({text:"|<<", icon:"assets/Media-Controls-Rewind-icon.png", activity:10});
-    this.buttons.push({text:"||", icon:"assets/Media-Controls-Pause-icon.png", activity:10});
-    this.buttons.push({text:">>|", icon:"assets/Media-Controls-Forward-icon.png", activity:10});
-    this.buttons.push({text:"Power", icon:null, activity:10});
+    this.buttons.push(new Button(7, 10, IconType.volume));
+    this.buttons.push(new Button(8, 11, IconType.volume));
+    this.buttons.push(new Button(6, 12, IconType.media));
+    this.buttons.push(new Button(3, 13, IconType.media));
+    this.buttons.push(new Button(5, 14, IconType.media));
+    this.buttons.push(new Button(4, 15, IconType.scene));
 
+    this.enable(IconType.volume);
+    this.chromeSubscription = this.chrome.getStatus().subscribe(d => {
+      if (d.chromeApp !== 'Backdrop') {
+        this.enable(IconType.media);
+      } else {
+        this.disable(IconType.media);
+      }
+      if (d.player_state === 'PLAYING') {
+        this.buttons[3].icon = 2;
+        this.buttons[3].activity = 16;
+      } else {
+        this.buttons[3].icon = 3;
+        this.buttons[3].activity = 13;
+      }
+    });
   }
 
   ngOnDestroy() {
-
+    this.chromeSubscription.unsubscribe();
   }
-  activate(button: Button) {
-    if (this.buttons[3].text == "||") {
-      this.buttons[3].text = ">";
-      this.buttons[3].icon = "assets/Media-Controls-Play-icon.png";
-    } else {
-      this.buttons[3].text = "||";
-      this.buttons[3].icon = "assets/Media-Controls-Pause-icon.png";
+  activate(button: Button, index: number) {
+    if (button.click()) {
+      switch (button.activity) {
+        case 13:
+          this.chrome.play();
+          break;
+        case 14:
+          this.chrome.next();
+          break;
+        case 16:
+          this.chrome.pause();
+      }
     }
-
   }
+
+  enable(type: IconType) {
+    this.buttons.forEach((c, i, a) => {
+      if (this.buttons[i].iconType === type) {
+        this.buttons[i].iconset = 1;
+      }
+    });
+  }
+
+  disable(type: IconType) {
+    this.buttons.forEach((c, i, a) => {
+      if (this.buttons[i].iconType === type) {
+        this.buttons[i].iconset = 0;
+      }
+    });
+  }
+
 }

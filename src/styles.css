@@ -6,10 +6,12 @@ body, html {
   clear:both;
 }
 div#cnt {
-	width: 1280px;
+	width: 1274px;
   margin: 0 auto;
+	padding: 0;
   text-align: center;
 	background-color: black;
+	box-sizing: border-box;
 }
 
 .sensor {
@@ -40,11 +42,11 @@ div#cnt {
 }
 
 .menu {
-	height:60px;
+	height:70px;
 }
 
 .menu .value {
-	line-height:45px;
+	line-height:55px;
 	padding:5px;
 	height: initial;
 	color: grey;
@@ -66,11 +68,15 @@ div#cnt {
 }
 
 .s4 {
-	width:315px;
+	width:314px;
 }
 
 .s6 {
   width:208px;
+}
+
+.s8 {
+	width:155px;
 }
 
 .v2 {
@@ -81,7 +87,7 @@ div#cnt {
 	height: 242px;
 }
 #mainApp {
-	height: 363px;
+	height: 433px;
 }
 
 .Off {
@@ -93,4 +99,9 @@ a:hover { text-decoration: none; color: grey; }
 
 a.active, a.active:visited {
 	color: darkorange;
+}
+
+.valueicon {
+	height: 90px;
+	width: 126px;
 }

@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class TimeoutService {
-
-  constructor(private router: Router) { }
   private timer;
   private sub: Subscription;
+
+  constructor(private router: Router) { }
+
   SetTimeout() {
     if (!this.timer) {
       this.timer = Observable.timer(10000);

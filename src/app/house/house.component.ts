@@ -9,13 +9,14 @@ import { Subscription } from 'rxjs/Subscription';
 })
 
 export class HouseComponent implements OnInit {
-  constructor( private domoticz: DomoticzService) { }
   sensors: Device[];
   sub: Subscription;
   errorMessage: any;
 
+  constructor( private domoticz: DomoticzService) { }
+
   ngOnInit() {
-    this.sub = this.domoticz.getDomoticzPlan(4, "MySensorNet")
+    this.sub = this.domoticz.getDomoticzPlan(4, 'MySensorNet')
         .subscribe(
             devices => { this.sensors = devices; },
             error => this.errorMessage = error

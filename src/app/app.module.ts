@@ -12,7 +12,6 @@ import { ChromeStateComponent } from './chrome-state/chrome-state.component';
 import { AvstateComponent } from './avstate/avstate.component';
 import { BackendwsService } from './backendws.service';
 import { SensorService } from './sensor/sensor.service';
-import { ToggleFullScreenDirective } from './toggle-full-screen.directive';
 import { SceneComponent } from './scene/scene.component';
 import { ConfService } from './conf.service';
 import { HouseComponent } from './house/house.component';
@@ -20,6 +19,8 @@ import { TruncatePipe } from './truncate.pipe';
 import { TruncateHeadPipe } from './truncate-head.pipe';
 import { TimeoutService } from './timeout.service';
 import { RemotectrlComponent } from './remotectrl/remotectrl.component';
+import { ChromeCastService } from './chrome-cast.service';
+import { DomoticzService } from './domoticz.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,6 @@ import { RemotectrlComponent } from './remotectrl/remotectrl.component';
     DashboardComponent,
     ChromeStateComponent,
     AvstateComponent,
-    ToggleFullScreenDirective,
     SceneComponent,
     HouseComponent,
     TruncatePipe,
@@ -48,7 +48,7 @@ import { RemotectrlComponent } from './remotectrl/remotectrl.component';
     {path: 'house', component: HouseComponent}
   ])
   ],
-  providers: [BackendwsService, SensorService, ConfService, TimeoutService ],
+  providers: [BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

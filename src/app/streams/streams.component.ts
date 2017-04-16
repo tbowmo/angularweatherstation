@@ -9,8 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
       <div class="value">{{streamData.friendly}}</div>
       <div class="label">{{streamData.tv | truncate : 30 }}</div>
   </div>
-  `,
-  providers: [ChromeCastService]
+  `
 })
 
 export class StreamsComponent implements OnInit, OnDestroy {

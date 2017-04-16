@@ -1,19 +1,17 @@
 <div id="cnt">
-  <div id="clockApp">
-    <div class="sensor s2">
-      <div class="value">--</div>
-      <div class="label">Vejrudsigt for Veddum Danmark</div>
-    </div>
-    <div class="sensor s2">
-      <div class="value">{{time}}</div>
-      <div class="label">{{date}}</div>
-    </div>
-    <app-sensor id="11" type="0" label="Udensørs" unit="&deg;C" size="6"></app-sensor>
-    <app-sensor id="11" type="1" label="Udendørs" unit="RH%" size="6"></app-sensor>
-    <app-sensor id="11" type="4" label="Baro" size="6" unit="hPa"></app-sensor>
-    <app-sensor id="10" type="0" label="Stuen" unit="&deg;C"></app-sensor>
-    <app-sensor id="10" type="1" label="Stuen" unit="RH%"></app-sensor>
+  <div class="sensor s2">
+    <div class="value">--</div>
+    <div class="label">Vejrudsigt for Veddum Danmark</div>
   </div>
+  <div class="sensor s2">
+    <div class="value">{{time}}</div>
+    <div class="label">{{date}}</div>
+  </div>
+  <app-sensor id="11" type="0" label="Udensørs" unit="&deg;C" size="6"></app-sensor>
+  <app-sensor id="11" type="1" label="Udendørs" unit="RH%" size="6"></app-sensor>
+  <app-sensor id="11" type="4" label="Baro" size="6" unit="hPa"></app-sensor>
+  <app-sensor id="10" type="0" label="Stuen" unit="&deg;C"></app-sensor>
+  <app-sensor id="10" type="1" label="Stuen" unit="RH%"></app-sensor>
   <div class="clearboth" style="height:20px;"></div>
   <div id="mainApp">
     <router-outlet></router-outlet>
@@ -25,4 +23,4 @@
     </div>
   </div>
 </div>
-<button (click)="gofullscreen()" *ngIf="showfullscreen">Toggle fullscreen<button>
+<button class="clearboth" (click)="gofullscreen()" *ngIf="showfullscreen">Toggle fullscreen<button>

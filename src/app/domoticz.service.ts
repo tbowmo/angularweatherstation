@@ -15,9 +15,9 @@ export interface Device {
   HumidityStatus: string;
 }
 
-interface domoticz {
+interface Domoticz {
   ActTime: string;
-  result : Device[]
+  result: Device[];
 }
 
 @Injectable()
@@ -38,15 +38,15 @@ export class DomoticzService {
   }
 
   private extractDevices(res: Response) {
-      const body: domoticz = res.json();
-      let devices:Device[] = Array<Device>();
+      const body: Domoticz = res.json();
+      const devices:  Device[] = Array<Device>();
       console.log(this.hardwareName);
       body.result.forEach(s => {
         console.log(this.hardwareName);
         if (s.HardwareName === this.hardwareName) {
           devices.push(s);
         }
-      })
+      });
       return devices || [{}];
   }
 
@@ -64,7 +64,7 @@ export class DomoticzService {
       return Observable.throw(errMsg);
   }
 
-  switchScene(scene:Device) {
+  switchScene(scene: Device) {
     const url = this.conf.sceneUrl + 'switch=' + scene.idx + '&state=On';
     return this.http.get(url).toPromise();
   }

@@ -72,7 +72,4 @@ export class SensorService {
       console.error(errMsg);
       return Observable.throw(errMsg);
   }
-
-  
-
 }

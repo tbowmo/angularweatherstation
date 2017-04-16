@@ -8,14 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
   template: `
   <div *ngFor="let sceneData of scenes" class="sensor s3" (click)="play(sceneData)">
       <div class="value {{sceneData.Status}}" >{{sceneData.Name | truncateHead}}</div>
-  </div>`,
-  providers: [DomoticzService]
+  </div>`
 })
 export class SceneComponent implements OnInit {
   private errorMessage: any;
   scenes: Device[];
   sub: Subscription;
-
 
   constructor(
     private sceneService: DomoticzService,
@@ -24,7 +22,7 @@ export class SceneComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sub = this.sceneService.getDomoticzPlan(2, "harmony")
+    this.sub = this.sceneService.getDomoticzPlan(2, 'harmony')
         .subscribe(
             scenes => { this.scenes = scenes; },
             error => this.errorMessage = error
@@ -36,5 +34,4 @@ export class SceneComponent implements OnInit {
          this.router.navigateByUrl('/dashboard');
      });
   }
-
 }

@@ -56,6 +56,50 @@ export class ChromeCastService {
         return this.http.get(url).toPromise();
     }
 
+    /**
+     * Pause current playing item
+     * @return {[type]} [description]
+     */
+    public pause() {
+      const url = this.conf.chromeUrl + 'video/pause';
+      this.http.get(url).toPromise().then((result) => {
+        const data = result.json();
+        this._chromeSubject.next(data);
+      });
+    }
+
+    /**
+     * Starts playying again, after a pause has been issued
+     * @return {none}
+     */
+    public play() {
+      const url = this.conf.chromeUrl + 'video/play';
+      this.http.get(url).toPromise().then((result) => {
+        const data = result.json();
+        this._chromeSubject.next(data);
+      });
+    }
+
+    /**
+     * Skips to next track (if supported)
+     * @return {none}
+     */
+    public next() {
+      const url = this.conf.chromeUrl + 'video/skip';
+      this.http.get(url).toPromise().then((result) => {
+        const data = result.json();
+        this._chromeSubject.next(data);
+      });
+    }
+
+    public previous() {
+      const url = this.conf.chromeUrl + 'video/previous';
+      this.http.get(url).toPromise().then((result) => {
+        const data = result.json();
+        this._chromeSubject.next(data);
+      });
+    }
+
     public getStatus(): Observable<ChromeCastStatus> {
         const url = this.conf.chromeUrl + 'status';
         this.http.get(url).toPromise().then((result) => {
