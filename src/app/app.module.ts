@@ -21,7 +21,7 @@ import { TimeoutService } from './timeout.service';
 import { RemotectrlComponent } from './remotectrl/remotectrl.component';
 import { ChromeCastService } from './chrome-cast.service';
 import { DomoticzService } from './domoticz.service';
-
+import { AvstateService } from './avstate/avstate.service'
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +48,7 @@ import { DomoticzService } from './domoticz.service';
     {path: 'house', component: HouseComponent}
   ])
   ],
-  providers: [BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService ],
+  providers: [BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

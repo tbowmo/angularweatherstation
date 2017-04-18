@@ -54,7 +54,8 @@ export class BackendwsService {
         break;
       case 'domavstate':
         if (this.AVStateSubject) {
-          this.AVStateSubject.next(msg.status as AVState);
+          console.log(msg);
+          this.AVStateSubject.next(msg as AVState);
         }
         break;
       default:

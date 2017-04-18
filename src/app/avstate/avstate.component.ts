@@ -5,8 +5,7 @@ import { AVState } from '../backend-message';
 @Component({
   selector: 'app-avstate',
   templateUrl: './avstate.component.html',
-  styleUrls: ['./avstate.component.css'],
-  providers : [AvstateService]
+  styleUrls: ['./avstate.component.css']
 })
 
 export class AvstateComponent implements OnInit {

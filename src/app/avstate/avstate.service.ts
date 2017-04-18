@@ -27,7 +27,6 @@ export class AvstateService {
       const data = result.json();
       this._avState.next(data);
     });
-
     return this._avState.asObservable();
   }
 

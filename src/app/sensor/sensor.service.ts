@@ -40,7 +40,7 @@ export class SensorService {
           const data = response.json();
           s.subType = type;
           s.nodeId = id;
-          s.payload = data[0].last;
+          s.payload = data.last;
           this.sensorList[sensor] = s;
           this._sensors.next(s);
         }

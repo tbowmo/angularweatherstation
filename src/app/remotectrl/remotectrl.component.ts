@@ -3,6 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription} from 'rxjs/Subscription';
 import { Button, IconType } from './button';
 import { ChromeCastService } from '../chrome-cast.service';
+import { AvstateService } from '../avstate/avstate.service';
+import { BackendMessage, AVState } from '../backend-message';
+
 @Component({
   selector: 'app-remotectrl',
   templateUrl: './remotectrl.component.html',
@@ -12,7 +15,13 @@ import { ChromeCastService } from '../chrome-cast.service';
 export class RemotectrlComponent implements OnInit, OnDestroy {
   buttons: Button[];
   private chromeSubscription: Subscription;
-  constructor(private chrome: ChromeCastService) { }
+  private error: any;
+  private avsub: Subscription;
+  private currentScene: string;
+
+  constructor(
+    private chrome: ChromeCastService,
+    private avstateService: AvstateService) { }
 
   ngOnInit() {
     this.buttons = Array<Button>();
@@ -25,7 +34,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
 
     this.enable(IconType.volume);
     this.chromeSubscription = this.chrome.getStatus().subscribe(d => {
-      if (d.chromeApp !== 'Backdrop') {
+      if (d.chromeApp !== 'Backdrop' && (this.currentScene.includes('Stream'))) {
         this.enable(IconType.media);
       } else {
         this.disable(IconType.media);
@@ -38,11 +47,33 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
         this.buttons[3].activity = 13;
       }
     });
+    this.avsub = this.avstateService.getState()
+        .subscribe(val => this.updateState(val),
+                   error => this.error = error);
+  }
+
+  private updateState(val:AVState) {
+    this.currentScene = val.status.scene;
+    if (val.status.scene.includes('Stream')) {
+      this.enable(IconType.media);
+    } else {
+      this.disable(IconType.media);
+    }
+
+    if (val.status.scene === "PowerOff") {
+      this.disable(IconType.volume);
+      this.disable(IconType.scene);
+    } else {
+      this.enable(IconType.volume);
+      this.enable(IconType.scene);
+    }
   }
 
   ngOnDestroy() {
     this.chromeSubscription.unsubscribe();
+    this.avsub.unsubscribe();
   }
+
   activate(button: Button, index: number) {
     if (button.click()) {
       switch (button.activity) {
