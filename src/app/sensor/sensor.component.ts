@@ -5,8 +5,11 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-sensor',
-  templateUrl: './sensor.component.html',
-  styleUrls: ['./sensor.component.css']
+  template:
+  `<div class="sensor s{{size}}">
+      <div class="value"><span>{{value|number : '1.1-2'}}</span></div>
+      <div class="label">{{label}} ({{unit}})</div>
+  </div>`
 })
 
 export class SensorComponent implements OnInit, OnDestroy {

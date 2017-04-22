@@ -13,6 +13,7 @@ export interface Device {
   Humidity: number;
   Temp: number;
   HumidityStatus: string;
+  Type: string;
 }
 
 interface Domoticz {

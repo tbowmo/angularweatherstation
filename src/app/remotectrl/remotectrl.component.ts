@@ -8,8 +8,10 @@ import { BackendMessage, AVState } from '../backend-message';
 
 @Component({
   selector: 'app-remotectrl',
-  templateUrl: './remotectrl.component.html',
-  styleUrls: ['./remotectrl.component.css']
+  template: `
+  <div *ngFor="let button of buttons; let i = index;" class="sensor s6" (click)="activate(button, i)">
+    <div class="value"><img src="assets/spacer.png" class="valueicon" [ngStyle]="{'left':button.left, 'background':button.background }"></div>
+  </div>`
 })
 
 export class RemotectrlComponent implements OnInit, OnDestroy {
@@ -17,7 +19,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
   private chromeSubscription: Subscription;
   private error: any;
   private avsub: Subscription;
-  private currentScene: string;
+  private currentScene: string = "";
 
   constructor(
     private chrome: ChromeCastService,
@@ -34,7 +36,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
 
     this.enable(IconType.volume);
     this.chromeSubscription = this.chrome.getStatus().subscribe(d => {
-      if (d.chromeApp !== 'Backdrop' && (this.currentScene.includes('Stream'))) {
+      if ((d.chromeApp !== "Radio") && (d.chromeApp !== 'Backdrop') && (this.currentScene.includes('Stream'))) {
         this.enable(IconType.media);
       } else {
         this.disable(IconType.media);

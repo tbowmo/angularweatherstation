@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   templateUrl: './house.component.html',
-  styleUrls: ['./house.component.css'],
   providers: [ DomoticzService ]
 })
 

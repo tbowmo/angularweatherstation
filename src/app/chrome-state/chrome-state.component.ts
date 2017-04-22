@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-chromestate',
-  templateUrl: './chrome-state.component.html',
-  styleUrls: ['./chrome-state.component.css']
+  templateUrl: './chrome-state.component.html'
 })
 
 export class ChromeStateComponent implements OnInit, OnDestroy {
