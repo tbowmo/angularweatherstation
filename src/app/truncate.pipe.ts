@@ -10,7 +10,10 @@ export class TruncatePipe implements PipeTransform {
     if (args) {
       limit = parseInt(args, 10);
     }
-
-    return value.length > limit ? value.substring(0, limit) + trail : value;
+    try {
+      return value.length > limit ? value.substring(0, limit) + trail : value;
+    } catch (e) {
+      return "";
+    }
   }
 }

@@ -14,6 +14,7 @@ export interface Device {
   Temp: number;
   HumidityStatus: string;
   Type: string;
+  LastUpdate: Date;
 }
 
 interface Domoticz {
