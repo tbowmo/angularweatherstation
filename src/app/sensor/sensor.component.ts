@@ -33,8 +33,6 @@ export class SensorComponent implements OnInit, OnDestroy {
     } else {
       this.precission = '1.1-' + this.decimals;
     }
-    console.log(typeof this.decimals);
-    console.log(this.precission);
     if (+this.id === 0) {
       return;
     }

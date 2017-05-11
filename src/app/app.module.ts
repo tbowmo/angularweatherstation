@@ -41,11 +41,12 @@ import { AvstateService } from './avstate/avstate.service'
     FormsModule,
     HttpModule,
     RouterModule.forRoot([
-    {path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {path: 'dashboard',  component: DashboardComponent},
     {path: 'streams/:device', component: StreamsComponent},
     {path: 'scene', component: SceneComponent},
-    {path: 'house', component: HouseComponent}
+    {path: 'house', component: HouseComponent},
+    {path: '**', redirectTo: 'dashboard'}
   ])
   ],
   providers: [BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],

@@ -26,6 +26,12 @@ export class ChromeCastService {
               this.device = message.device_name;
               this._chromeSubject.next(message);
             });
+      const url = this.conf.chromeUrl + 'status';
+      this.http.get(url).toPromise().then((result) => {
+        const data:ChromeCastStatus = result.json();
+        this.device = data.device_name;
+        this._chromeSubject.next(data);
+      });
     }
 
     getStreams(type: string): Observable<ChromeCastStream[]> {
@@ -101,14 +107,9 @@ export class ChromeCastService {
     }
 
     public getStatus(): Observable<ChromeCastStatus> {
-        const url = this.conf.chromeUrl + 'status';
-        this.http.get(url).toPromise().then((result) => {
-          const data:ChromeCastStatus = result.json();
-          this.device = data.device_name;
-          this._chromeSubject.next(data);
-        });
         return this._chromeSubject.asObservable();
     }
+
     private getDevice(): string {
       if (this.device.includes("Audio")) {
         return "audio";
