@@ -6,15 +6,15 @@ import 'rxjs/add/operator/map';
 import { ConfService } from './conf.service';
 
 export interface Device {
-  Name: string;
-  idx: number;
-  Status: string;
-  HardwareName: string;
-  Humidity: number;
-  Temp: number;
-  HumidityStatus: string;
-  Type: string;
-  LastUpdate: Date;
+  Name?: string;
+  idx?: number;
+  Status?: string;
+  HardwareName?: string;
+  Humidity?: number;
+  Temp?: number;
+  HumidityStatus?: string;
+  Type?: string;
+  LastUpdate?: Date;
 }
 
 interface Domoticz {

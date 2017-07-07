@@ -6,7 +6,7 @@ import { ConfService } from './conf.service';
 
 @Injectable()
 export class BackendwsService {
-  private socket: Subject<MessageEvent>;
+  private socket: WebSocket;
   private subscription: Subscription;
   private sensorSubject: Subject<Sensor>;
   private ChromeSubject: Subject<ChromeCastStatus>;
@@ -18,28 +18,32 @@ export class BackendwsService {
     );
   }
 
-  connectSensor(): Observable<Sensor> {
+  public connectSensor(): Observable<Sensor> {
     if (!this.sensorSubject) {
       this.sensorSubject = new Subject();
     }
     return this.sensorSubject.asObservable();
   }
 
-  connectChrome(): Observable<ChromeCastStatus> {
+  public connectChrome(): Observable<ChromeCastStatus> {
     if (!this.ChromeSubject) {
       this.ChromeSubject = new Subject();
     }
     return this.ChromeSubject.asObservable();
   }
 
-  connectAVState(): Observable<AVState> {
+  public connectAVState(): Observable<AVState> {
     if (!this.AVStateSubject) {
       this.AVStateSubject = new Subject();
     }
     return this.AVStateSubject.asObservable();
   }
 
-  receive(message: MessageEvent) {
+  public transmit(message: BackendMessage): void {
+    this.socket.send(JSON.stringify(message));
+  }
+
+  private receive(message: MessageEvent) {
     const msg: BackendMessage = JSON.parse(message.data);
     switch (msg.func) {
       case 'sensormsg':
@@ -64,23 +68,22 @@ export class BackendwsService {
     }
   }
 
-
   private connect(): Subject<MessageEvent> {
-    const ws = new WebSocket(this.conf.socketUrl);
+    this.socket = new WebSocket(this.conf.socketUrl);
 
     const observable = Observable.create(
       (obs: Observer<MessageEvent>) => {
-        ws.onmessage = obs.next.bind(obs);
-        ws.onerror = obs.error.bind(obs);
-        ws.onclose = obs.complete.bind(obs);
-        return ws.close.bind(ws);
+        this.socket.onmessage = obs.next.bind(obs);
+        this.socket.onerror = obs.error.bind(obs);
+        this.socket.onclose = obs.complete.bind(obs);
+        return this.socket.close.bind(this.socket);
       }
     );
 
     const observer = {
       next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
+        if (this.socket.readyState === WebSocket.OPEN) {
+          this.socket.send(JSON.stringify(data));
         }
       },
     };

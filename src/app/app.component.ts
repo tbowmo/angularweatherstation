@@ -4,6 +4,8 @@ import { MenuLink } from './menu-link';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import "moment/locale/da";
+import { TimeoutService } from './timeout.service';
+
 declare const require: any;
 const screenfull = require('screenfull');
 
@@ -17,7 +19,9 @@ export class AppComponent implements OnInit {
   date = '00:00';
   menuLinks: MenuLink[];
   showfullscreen = true;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private timeout: TimeoutService) {}
 
   ngOnInit() {
     this.menuLinks = [
@@ -43,6 +47,7 @@ export class AppComponent implements OnInit {
     screenfull.toggle();
   }
   switchRoute(menu: MenuLink) {
+    this.timeout.SetTimeout();
     this.router.navigate(menu.target);
   }
 }

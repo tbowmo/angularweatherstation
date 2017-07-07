@@ -3,7 +3,10 @@ import { Observable } from 'rxjs/Observable';
 export enum IconType {
   media,
   scene,
-  volume
+  volume,
+  media_pause,
+  media_back,
+  media_fwd
 }
 
 export class Button {

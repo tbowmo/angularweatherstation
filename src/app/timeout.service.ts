@@ -11,9 +11,14 @@ export class TimeoutService {
   constructor(private router: Router) { }
 
   SetTimeout() {
-    if (!this.timer) {
-      this.timer = Observable.timer(10000);
+    console.log(this.sub);
+    if (this.sub) {
+      this.sub.unsubscribe();
+      this.sub = null;
     }
+    this.timer = Observable.timer(10000);
+//    }
+
     this.sub = this.timer.subscribe(t => this.tickerFunc(t) );
   }
 
@@ -21,6 +26,7 @@ export class TimeoutService {
     this.router.navigate(['dashboard']);
     this.sub.unsubscribe();
     this.timer = null;
+    this.sub = null;
   }
 
   ResetTimeout() {
