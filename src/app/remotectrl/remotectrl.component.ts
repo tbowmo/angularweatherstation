@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription} from 'rxjs/Subscription';
 import { Button, IconType } from './button';
 import { ChromeCastService } from '../chrome-cast.service';
-import { AvstateService } from '../avstate/avstate.service';
+import { AvstateService } from '../dashboard/avstate.service';
 import { BackendMessage, AVState } from '../backend-message';
 import { DomoticzService, Device} from '../domoticz.service';
 import { BackendwsService,  } from '../backendws.service';

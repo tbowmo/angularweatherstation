@@ -9,7 +9,6 @@ import { StreamsComponent } from './streams/streams.component';
 import { SensorComponent } from './sensor/sensor.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChromeStateComponent } from './chrome-state/chrome-state.component';
-import { AvstateComponent } from './avstate/avstate.component';
 import { BackendwsService } from './backendws.service';
 import { SensorService } from './sensor/sensor.service';
 import { SceneComponent } from './scene/scene.component';
@@ -21,7 +20,8 @@ import { TimeoutService } from './timeout.service';
 import { RemotectrlComponent } from './remotectrl/remotectrl.component';
 import { ChromeCastService } from './chrome-cast.service';
 import { DomoticzService } from './domoticz.service';
-import { AvstateService } from './avstate/avstate.service'
+import { AvstateService } from './dashboard/avstate.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +29,6 @@ import { AvstateService } from './avstate/avstate.service'
     SensorComponent,
     DashboardComponent,
     ChromeStateComponent,
-    AvstateComponent,
     SceneComponent,
     HouseComponent,
     TruncatePipe,
