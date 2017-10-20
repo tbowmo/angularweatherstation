@@ -1,8 +1,9 @@
-<div class="sensor s1_5">
+<div class="sensor s2">
         <div class="value">{{avstate}}</div>
         <div class="label">A/V tilstand</div>
 </div>
 <app-sensor id="99" type="25" label="EL forbrug i dag" unit="Wh"></app-sensor>
-<app-chromestate></app-chromestate>
 <app-sensor id="99" type="17" label="Aktuelt EL forbrug" unit="watt"></app-sensor>
+<app-chromestate></app-chromestate>
+<app-sensor id="20" type="0" child="0" label="Gulvvarme" unit="&deg;C"></app-sensor>
 <app-remotectrl></app-remotectrl>

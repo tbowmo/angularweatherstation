@@ -12,14 +12,14 @@ import { BackendMessage, Sensor } from '../backend-message';
 export class SensorService {
   private _sensors: Subject<Sensor>;
   private connection: Subscription;
-  private sensorList: Sensor[];
+  private sensorList: Sensor[][][];
 
   constructor (
     private http: Http,
     private backend: BackendwsService,
     private conf: ConfService) {
     this._sensors = new Subject();
-    this.sensorList = new Array<Sensor>();
+    this.sensorList = []; //new Array<Sensor>();
     this.connection = this.backend.connectSensor()
           .subscribe(message => this.backendReceiver(message));
   }
@@ -28,11 +28,17 @@ export class SensorService {
     return this._sensors.asObservable();
   }
 
-  public fetchSensor(id, type)  {
-    const url = this.conf.sensorUrl + '?node=' + id.toString() + '&subType=' + type.toString();
-    const sensor = this.ToHex(id) + this.ToHex(type);
-    if (this.sensorList[sensor] !== undefined) {
-      this._sensors.next(this.sensorList[sensor]);
+  public fetchSensor(id: number, type: number, child?: number)  {
+    let url = this.conf.sensorUrl + '?node=' + id.toString() + '&subType=' + type.toString();
+    if (child !== undefined) {
+      url = url + "&sensor=" + child.toString();
+    } else {
+      child = 1;
+    }
+    if (this.sensorList[id] !== undefined
+        && this.sensorList[id][type] !== undefined
+        && this.sensorList[id][type][child] !== undefined) {
+      this._sensors.next(this.sensorList[id][type][child]);
     } else {
       this.http.get(url).toPromise().then(
         response => {
@@ -41,7 +47,14 @@ export class SensorService {
           s.subType = type;
           s.nodeId = id;
           s.payload = data.last;
-          this.sensorList[sensor] = s;
+          s.childSensorId = child;
+          if (this.sensorList[id] === undefined) {
+            this.sensorList[id] = [];
+          }
+          if (this.sensorList[id][type] === undefined) {
+            this.sensorList[id][type] = [];
+          }
+          this.sensorList[id][type][child] = s;
           this._sensors.next(s);
         }
       );
@@ -54,8 +67,13 @@ export class SensorService {
   }
 
   backendReceiver(message: Sensor) {
-    const sensorid = this.ToHex(message.nodeId) + this.ToHex(message.subType);
-    this.sensorList[sensorid] = message;
+    if (this.sensorList[message.nodeId] === undefined) {
+      this.sensorList[message.nodeId] = [];
+    }
+    if (this.sensorList[message.nodeId][message.subType] === undefined) {
+      this.sensorList[message.nodeId][message.subType] = [];
+    }
+    this.sensorList[message.nodeId][message.subType][message.childSensorId] = message;
     this._sensors.next(message);
   }
 

@@ -14,11 +14,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 export class SensorComponent implements OnInit, OnDestroy {
   @Input() id: number;
-  @Input() type = 2;
+  @Input() type: number = 2;
   @Input() label = 'N/A';
   @Input() size = 4;
   @Input() unit = 'N/A';
   @Input() decimals: number = 1;
+  @Input() child: number;
   precission = '1.0-0';
 
   value = 0;
@@ -41,7 +42,7 @@ export class SensorComponent implements OnInit, OnDestroy {
         val => this.handleSensor(val),
         error => this.errorMessage = <any>error
       );
-    this.sensorService.fetchSensor(this.id, this.type);
+    this.sensorService.fetchSensor(this.id, this.type, this.child);
   }
 
   ngOnDestroy() {
@@ -50,9 +51,8 @@ export class SensorComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleSensor(message: any) {
-    message = message as Sensor;
-    if (+message.nodeId === +this.id && +message.subType === +this.type) {
+  handleSensor(message: Sensor) {
+    if (+message.nodeId === +this.id && +message.subType === +this.type && (this.child === undefined || +message.childSensorId === +this.child)) {
       this.value = +message.payload;
     }
   }
