@@ -21,6 +21,7 @@ import { RemotectrlComponent } from './remotectrl/remotectrl.component';
 import { ChromeCastService } from './chrome-cast.service';
 import { DomoticzService } from './domoticz.service';
 import { AvstateService } from './dashboard/avstate.service';
+import { LOCALE_ID } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AvstateService } from './dashboard/avstate.service';
     {path: '**', redirectTo: 'dashboard'}
   ])
   ],
-  providers: [BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],
+  providers: [ {provide: LOCALE_ID, useValue: "da-DK"},
+  BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

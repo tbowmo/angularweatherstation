@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { ConfService } from './conf.service';
 
 export interface Device {
+  Favorite?: number,
   Name?: string;
   idx?: number;
   Status?: string;
@@ -15,6 +16,8 @@ export interface Device {
   HumidityStatus?: string;
   Type?: string;
   LastUpdate?: Date;
+  Timers? : string,
+  HardwareID? : number,
 }
 
 interface Domoticz {
@@ -25,27 +28,27 @@ interface Domoticz {
 @Injectable()
 export class DomoticzService {
   private err: any;
-  private hardwareName: string;
+//  private hardwareName: string;
 
   constructor(
     private http: Http,
     private conf: ConfService) { }
 
   getDomoticzPlan(planId: number, hardwareName: string): Observable<Device[]> {
-    this.hardwareName = hardwareName;
-    console.log(this.hardwareName);
+//    this.hardwareName = hardwareName;
+//    console.log(this.hardwareName);
     return this.http.get(this.conf.sceneUrl + 'plan=' + planId)
-                    .map((res) => this.extractDevices(res))
+                    .map((res) => this.extractDevices(res, hardwareName))
                     .catch(this.handleError);
   }
 
-  private extractDevices(res: Response) {
+  private extractDevices(res: Response, hardwareName: string) {
       const body: Domoticz = res.json();
       const devices:  Device[] = Array<Device>();
-      console.log(this.hardwareName);
+      console.log(hardwareName);
       body.result.forEach(s => {
-        console.log(this.hardwareName);
-        if (s.HardwareName === this.hardwareName) {
+        console.log(hardwareName);
+        if (s.HardwareName === hardwareName) {
           devices.push(s);
         }
       });
@@ -67,7 +70,14 @@ export class DomoticzService {
   }
 
   switchScene(scene: Device) {
-    const url = this.conf.sceneUrl + 'switch=' + scene.idx + '&state=On';
+    let url = this.conf.sceneUrl;
+    if (scene.Type === 'Scene' || scene.Type === 'Group') {
+      url = url + 'switchscene&idx=' + scene.idx + '&switchcmd=On'
+    } else {
+      url =  url + 'switch=' + scene.idx + '&state=On';
+    }
     return this.http.get(url).toPromise();
   }
+
+
 }

@@ -94,8 +94,10 @@ div#cnt {
 	color: grey;
 }
 
-a, a:visited { text-decoration: none; color: grey; }
-a:hover { text-decoration: none; color: grey; }
+a, a:visited, a:hover {
+	text-decoration: none;
+	color: grey;
+}
 
 a.active, a.active:visited {
 	color: darkorange;
