@@ -7,6 +7,7 @@ export class ChromeCastStatus {
     media = '';
     artist = '';
     device_name = '';
+    device_type = '';
     skip_fwd =  false;
     skip_bck = false;
     pause = false;

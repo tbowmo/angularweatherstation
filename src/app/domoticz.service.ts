@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { ConfService } from './conf.service';
@@ -16,8 +16,8 @@ export interface Device {
   HumidityStatus?: string;
   Type?: string;
   LastUpdate?: Date;
-  Timers? : string,
-  HardwareID? : number,
+  Timers?: string,
+  HardwareID?: number,
 }
 
 interface Domoticz {
@@ -31,19 +31,17 @@ export class DomoticzService {
 //  private hardwareName: string;
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private conf: ConfService) { }
 
   getDomoticzPlan(planId: number, hardwareName: string): Observable<Device[]> {
 //    this.hardwareName = hardwareName;
 //    console.log(this.hardwareName);
-    return this.http.get(this.conf.sceneUrl + 'plan=' + planId)
-                    .map((res) => this.extractDevices(res, hardwareName))
-                    .catch(this.handleError);
+    return this.http.get<Domoticz>(this.conf.sceneUrl + 'plan=' + planId)
+                    .map((res) => this.extractDevices(res, hardwareName));
   }
 
-  private extractDevices(res: Response, hardwareName: string) {
-      const body: Domoticz = res.json();
+  private extractDevices(body: Domoticz, hardwareName: string) {
       const devices:  Device[] = Array<Device>();
       console.log(hardwareName);
       body.result.forEach(s => {
@@ -53,20 +51,6 @@ export class DomoticzService {
         }
       });
       return devices || [{}];
-  }
-
-  private handleError (error: Response | any) {
-      let errMsg: string;
-      if (error instanceof Response) {
-          const body = error.json() || '';
-          const err = body.error || JSON.stringify(body);
-          errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-      } else {
-          errMsg = error.message ? error.message : error.toString();
-      }
-
-      console.error(errMsg);
-      return Observable.throw(errMsg);
   }
 
   switchScene(scene: Device) {

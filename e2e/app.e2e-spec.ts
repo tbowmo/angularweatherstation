@@ -7,8 +7,8 @@ describe('dashboard App', () => {
     page = new DashboardPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display message saying app works', async() => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(await page.getParagraphText()).toEqual('app works!');
   });
 });

@@ -7,12 +7,15 @@ import { AvstateService } from '../dashboard/avstate.service';
 import { BackendMessage, AVState } from '../backend-message';
 import { DomoticzService, Device} from '../domoticz.service';
 import { BackendwsService,  } from '../backendws.service';
+import { ChromeCastStatus } from 'app/chrome-cast-status';
 
 @Component({
   selector: 'app-remotectrl',
   template: `
   <div *ngFor="let button of buttons; let i = index;" class="sensor s6" (click)="activate(button, i)">
-    <div class="value"><img src="assets/spacer.png" class="valueicon" [ngStyle]="{'left':button.left, 'background':button.background }"></div>
+    <div class="value">
+      <img src="assets/spacer.png" class="valueicon" [ngStyle]="{'left':button.left, 'background':button.background }"/>
+    </div>
   </div>`
 })
 
@@ -22,7 +25,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
   private chromeSubscription: Subscription;
   private error: any;
   private avsub: Subscription;
-  private currentScene: string = "";
+  private currentScene = '';
 
   constructor(
     private chrome: ChromeCastService,
@@ -46,7 +49,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
                    error => this.error = error);
   }
 
-  handleState(state) {
+  handleState(state: ChromeCastStatus) {
     if (state.skip_fwd) {
       this.enable(IconType.media_fwd);
     } else {
@@ -77,7 +80,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateState(val:AVState) {
+  private updateState(val: AVState) {
     this.currentScene = val.status.scene;
 /*    if (val.status.scene.includes('Stream')) {
       this.enable(IconType.media);
@@ -85,7 +88,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
       this.disable(IconType.media);
     }
 */
-    if (val.status.scene === "PowerOff") {
+    if (val.status.scene === 'PowerOff') {
       this.disable(IconType.volume);
       this.disable(IconType.scene);
     } else {
@@ -100,19 +103,19 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
   }
 
   activate(button: Button, index: number) {
-    let msg: BackendMessage =  {
-      func: "remote",
-      status: { t: ""}
+    const msg: BackendMessage =  {
+      func: 'remote',
+      status: { t: ''}
     }
     if (button.click()) {
       switch (button.activity) {
         case 10:
-          msg.status = {t: "voldown"};
+          msg.status = {t: 'voldown'};
           this.backend.transmit(msg);
           // Volume down
           break;
         case 11:
-          msg.status = { t: "volup"}
+          msg.status = { t: 'volup'}
           this.backend.transmit(msg);
           break;
         case 12:

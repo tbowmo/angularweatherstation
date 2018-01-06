@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -39,7 +39,7 @@ import { LOCALE_ID } from '@angular/core';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot([
     {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {path: 'dashboard',  component: DashboardComponent},
@@ -49,7 +49,7 @@ import { LOCALE_ID } from '@angular/core';
     {path: '**', redirectTo: 'dashboard'}
   ])
   ],
-  providers: [ {provide: LOCALE_ID, useValue: "da-DK"},
+  providers: [ /*{provide: LOCALE_ID, useValue: "da"},*/
   BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],
   bootstrap: [AppComponent]
 })

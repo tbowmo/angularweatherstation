@@ -1,23 +1,26 @@
+import { BackendMessage } from './backend-message';
+import { BackendwsService } from './backendws.service';
+import { ChromeCastStatus } from './chrome-cast-status';
+import { ChromeCastStream } from './chrome-cast-stream';
+import { ConfService } from './conf.service';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, Response} from '@angular/http';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { ChromeCastStream} from './chrome-cast-stream';
-import { ChromeCastStatus } from './chrome-cast-status';
-import { BackendwsService } from './backendws.service';
-import { BackendMessage } from './backend-message';
-import { ConfService } from './conf.service';
 
 @Injectable()
 export class ChromeCastService {
 
     private _chromeSubject: ReplaySubject<ChromeCastStatus>;
-    private connection: any;
+    private connection: Subscription;
     private device: string;
+    private deviceType: string;
+
     constructor (
-      private http: Http,
+      private http: HttpClient,
       private backendWsService: BackendwsService,
       private conf: ConfService) {
       this._chromeSubject = new ReplaySubject(1);
@@ -27,34 +30,16 @@ export class ChromeCastService {
               this._chromeSubject.next(message);
             });
       const url = this.conf.chromeUrl + 'status';
-      this.http.get(url).toPromise().then((result) => {
-        const data:ChromeCastStatus = result.json();
+      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
         this.device = data.device_name;
+        this.deviceType = data.device_type;
         this._chromeSubject.next(data);
       });
     }
 
     getStreams(type: string): Observable<ChromeCastStream[]> {
         const url = this.conf.chromeUrl + type + '/list';
-        return this.http.get(url)
-                        .map((res: Response) => {
-                          return res.json() || {}
-                        })
-                        .catch(this.handleError);
-    }
-
-    private handleError (error: Response | any) {
-        let errMsg: string;
-        if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-
-        console.error(errMsg);
-        return Observable.throw(errMsg);
+        return this.http.get<ChromeCastStream[]>(url);
     }
 
     public playStream(stream: ChromeCastStream, device: string) {
@@ -67,21 +52,19 @@ export class ChromeCastService {
      * @return {[type]} [description]
      */
     public pause() {
-      const url = this.conf.chromeUrl + this.getDevice() + '/pause';
-      this.http.get(url).toPromise().then((result) => {
-        const data = result.json();
+      const url = this.conf.chromeUrl + this.deviceType + '/pause';
+      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
         this._chromeSubject.next(data);
       });
     }
 
     /**
-     * Starts playying again, after a pause has been issued
+     * Starts playing again, after a pause has been issued
      * @return {none}
      */
     public play() {
-      const url = this.conf.chromeUrl + this.getDevice() + '/play';
-      this.http.get(url).toPromise().then((result) => {
-        const data = result.json();
+      const url = this.conf.chromeUrl + this.deviceType + '/play';
+      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
         this._chromeSubject.next(data);
       });
     }
@@ -91,30 +74,20 @@ export class ChromeCastService {
      * @return {none}
      */
     public next() {
-      const url = this.conf.chromeUrl + this.getDevice() + '/skip';
-      this.http.get(url).toPromise().then((result) => {
-        const data = result.json();
+      const url = this.conf.chromeUrl + this.deviceType + '/skip';
+      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
         this._chromeSubject.next(data);
       });
     }
 
     public previous() {
-      const url = this.conf.chromeUrl + this.getDevice()+'/previous';
-      this.http.get(url).toPromise().then((result) => {
-        const data = result.json();
+      const url = this.conf.chromeUrl + this.deviceType + '/previous';
+      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
         this._chromeSubject.next(data);
       });
     }
 
     public getStatus(): Observable<ChromeCastStatus> {
         return this._chromeSubject.asObservable();
-    }
-
-    private getDevice(): string {
-      if (this.device.includes("Audio")) {
-        return "audio";
-      } else {
-        return "video";
-      }
     }
 }
