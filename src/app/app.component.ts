@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MenuLink } from './menu-link';
+import { MenuLink } from './_models';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import "moment/locale/da";
-import { TimeoutService } from './timeout.service';
+import 'moment/locale/da';
+import { TimeoutService } from './_services';
 
 declare const require: any;
 const screenfull = require('screenfull');
@@ -32,13 +32,13 @@ export class AppComponent implements OnInit {
       {label: 'Huset', target: ['house'], css: ''},
       {label: '', target: [''], css: ''},
     ];
-    moment().locale("dk");
-    this.time = moment().format("HH:mm");
-    this.date = moment().format("MMMM Do YYYY");
+    moment().locale('dk');
+    this.time = moment().format('HH:mm');
+    this.date = moment().format('MMMM Do YYYY');
     const timer = Observable.timer(0, 1000);
     timer.subscribe(() => {
-      this.time = moment().format("HH:mm");
-      this.date = moment().format("dddd Do MMMM - YYYY");
+      this.time = moment().format('HH:mm');
+      this.date = moment().format('dddd Do MMMM - YYYY');
     });
   }
 

@@ -1,24 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { DomoticzService, Device } from '../domoticz.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  templateUrl: './house.component.html',
-  providers: [ DomoticzService ]
+  templateUrl: './house.component.html'
 })
 
 export class HouseComponent implements OnInit {
-  sensors: Device[];
   sub: Subscription;
   errorMessage: any;
 
-  constructor( private domoticz: DomoticzService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.sub = this.domoticz.getDomoticzPlan(4, 'MySensorNet')
-        .subscribe(
-            devices => { this.sensors = devices; },
-            error => this.errorMessage = error
-          );
   }
 }

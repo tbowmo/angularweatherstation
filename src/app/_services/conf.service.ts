@@ -16,9 +16,6 @@ export class ConfService {
   public get sceneUrl(): string {
     return this._serverUrl + 'node/test?';
   }
-  public get sensorUrl(): string {
-    return this._serverUrl + 'node/environment/';
-  }
   public get socketUrl(): string {
     return 'wss://' + this._serverName + '/node/dashboard';
   }

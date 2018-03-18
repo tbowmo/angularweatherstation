@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChromeCastStatus } from '../chrome-cast-status';
-import { ChromeCastService } from '../chrome-cast.service';
+import { ChromeCastStatus } from '../_models';
+import { ChromeCastService } from '../_services';
 import { Observable, Subscription } from 'rxjs/Rx';
+import { MqttService } from 'ngx-mqtt';
 
 @Component({
   selector: 'app-chromestate',
@@ -13,28 +14,31 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
   subscribeStream: Subscription;
   chromeStatus: ChromeCastStatus;
   tidalTick = 0;
-  title: string = "";
-  device: string = "";
+  title = '';
+  device = '';
   private timer;
   // Subscription object
   private sub: Subscription;
 
 
-  constructor(private streamService: ChromeCastService ) {}
+  constructor (private mqtt: MqttService) {
+    mqtt.onError.subscribe((e) => console.log('onError', e));
+  }
 
   ngOnInit() {
-      this.title = "";
-      this.device = "";
-      this.timer = Observable.timer(2000,5000);
+      this.timer = Observable.timer(2000, 5000);
       // subscribing to a observable returns a subscription object
       this.sub = this.timer.subscribe(t => this.tickerFunc(t));
       this.chromeStatus = new ChromeCastStatus();
-      this.subscribeStream = this.streamService.getStatus().subscribe(state => this.handleState(state), error => this.errorMessage);
-  }
+      this.subscribeStream = this.mqtt.observe('chromecast/+/media').subscribe((data) => {
+        const d = JSON.parse(data.payload.toString()) as ChromeCastStatus;
+        this.handleState(d);
+      });
+    }
 
-  tickerFunc(tick){
+  tickerFunc(tick) {
     if (this.chromeStatus !== undefined) {
-      if (this.chromeStatus.chromeApp ===  "TIDAL") {
+      if (this.chromeStatus.chromeApp ===  'TIDAL') {
         this.tidalTicker();
       }
     }
@@ -42,18 +46,18 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
 
   private tidalTicker() {
     this.tidalTick++;
-    switch(this.tidalTick) {
+    switch (this.tidalTick) {
       case 1:
         this.title = this.chromeStatus.title;
-        this.device = "TIDAL Title";
+        this.device = 'TIDAL Title';
         break;
       case 2:
         this.title = this.chromeStatus.artist;
-        this.device = "TIDAL Artist";
+        this.device = 'TIDAL Artist';
         break;
       case 3:
         this.title = this.chromeStatus.album;
-        this.device = "TIDAL Album";
+        this.device = 'TIDAL Album';
         this.tidalTick = 0;
         break;
     }
@@ -66,7 +70,7 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
       this.chromeStatus.chromeApp = '';
       this.chromeStatus.title = '';
     }
-    if (this.chromeStatus.chromeApp === "TIDAL") {
+    if (this.chromeStatus.chromeApp === 'TIDAL') {
       this.tidalTick = 0;
       this.tidalTicker();
     } else {

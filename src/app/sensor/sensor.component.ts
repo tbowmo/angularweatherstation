@@ -1,6 +1,11 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { SensorService } from './sensor.service';
-import { Sensor } from '../backend-message';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit
+  } from '@angular/core';
+import { MqttMessage, MqttService } from 'ngx-mqtt';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -14,19 +19,26 @@ import { Subscription } from 'rxjs/Subscription';
 
 export class SensorComponent implements OnInit, OnDestroy {
   @Input() id: number;
-  @Input() type: number = 2;
+  @Input() type = 2;
   @Input() label = 'N/A';
   @Input() size = 4;
   @Input() unit = 'N/A';
-  @Input() decimals: number = 1;
+  @Input() decimals = 1;
   @Input() child: number;
   precission = '1.0-0';
+  private filter = '';
 
-  value = 0;
+  public get observables() {
+    return this.mqtt.observables;
+  }
+
+  value: number;
   errorMessage: any;
   sensorSubscription: Subscription;
 
-  constructor (private sensorService: SensorService) { }
+  constructor (private mqtt: MqttService) {
+    mqtt.onError.subscribe((e) => console.log('onError', e));
+  }
 
   ngOnInit() {
     if (+this.decimals === 0) {
@@ -37,23 +49,19 @@ export class SensorComponent implements OnInit, OnDestroy {
     if (+this.id === 0) {
       return;
     }
-    this.sensorSubscription = this.sensorService.sensorsStream
-      .subscribe(
-        val => this.handleSensor(val),
-        error => this.errorMessage = <any>error
-      );
-    this.sensorService.fetchSensor(this.id, this.type, this.child);
+    let child = '+';
+    if (this.child !== undefined) {
+      child = this.child.toString();
+    }
+    this.filter = `dashboard/sensors/${this.id}/${child}/1/+/${this.type}`;
+    console.log(this.filter);
+    this.sensorSubscription = this.mqtt.observe(this.filter).subscribe((data) => {
+      this.value = Number(data.payload);
+    });
   }
 
   ngOnDestroy() {
-    if (this.sensorSubscription !== undefined) {
-      this.sensorSubscription.unsubscribe();
-    }
-  }
-
-  handleSensor(message: Sensor) {
-    if (+message.nodeId === +this.id && +message.subType === +this.type && (this.child === undefined || +message.childSensorId === +this.child)) {
-      this.value = +message.payload;
-    }
+    this.sensorSubscription.unsubscribe();
+    this.mqtt.observables[this.filter] = null;
   }
 }

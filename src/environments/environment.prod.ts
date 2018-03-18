@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  production: true,
+  MQTT_SERVICE_OPTIONS: {
+    hostname: 'localhost',
+    port: 9001
+  }
 };

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer, Subscription } from 'rxjs/Rx';
-import { Sensor, AVState, BackendMessage } from './backend-message';
-import { ChromeCastStatus} from './chrome-cast-status';
+import { Sensor, AVState, BackendMessage } from '../_models';
+import { ChromeCastStatus} from '../_models';
 import { ConfService } from './conf.service';
 
 @Injectable()

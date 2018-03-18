@@ -9,19 +9,18 @@ import { StreamsComponent } from './streams/streams.component';
 import { SensorComponent } from './sensor/sensor.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChromeStateComponent } from './chrome-state/chrome-state.component';
-import { BackendwsService } from './backendws.service';
-import { SensorService } from './sensor/sensor.service';
+import { BackendwsService } from './_services';
 import { SceneComponent } from './scene/scene.component';
-import { ConfService } from './conf.service';
+import { ConfService } from './_services';
 import { HouseComponent } from './house/house.component';
-import { TruncatePipe } from './truncate.pipe';
-import { TruncateHeadPipe } from './truncate-head.pipe';
-import { TimeoutService } from './timeout.service';
+import { TruncatePipe } from './_pipes';
+import { TruncateHeadPipe } from './_pipes';
+import { TimeoutService } from './_services';
 import { RemotectrlComponent } from './remotectrl/remotectrl.component';
-import { ChromeCastService } from './chrome-cast.service';
-import { DomoticzService } from './domoticz.service';
-import { AvstateService } from './dashboard/avstate.service';
+import { ChromeCastService } from './_services';
 import { LOCALE_ID } from '@angular/core';
+import { MqttService, MqttModule } from 'ngx-mqtt';
+import { environment } from 'environments/environment';
 
 @NgModule({
   declarations: [
@@ -47,10 +46,18 @@ import { LOCALE_ID } from '@angular/core';
     {path: 'scene', component: SceneComponent},
     {path: 'house', component: HouseComponent},
     {path: '**', redirectTo: 'dashboard'}
-  ])
+  ]),
+  MqttModule.forRoot({
+    provide: MqttService,
+    useFactory: mqttServiceFactory
+  })
   ],
   providers: [ /*{provide: LOCALE_ID, useValue: "da"},*/
-  BackendwsService, SensorService, ConfService, TimeoutService, ChromeCastService, DomoticzService, AvstateService ],
+  BackendwsService, ConfService, TimeoutService, ChromeCastService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function mqttServiceFactory() {
+  return new MqttService(environment.MQTT_SERVICE_OPTIONS);
+}

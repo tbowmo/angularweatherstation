@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription} from 'rxjs/Subscription';
 import { Button, IconType } from './button';
-import { ChromeCastService } from '../chrome-cast.service';
-import { AvstateService } from '../dashboard/avstate.service';
-import { BackendMessage, AVState } from '../backend-message';
-import { DomoticzService, Device} from '../domoticz.service';
-import { BackendwsService,  } from '../backendws.service';
-import { ChromeCastStatus } from 'app/chrome-cast-status';
+import { ChromeCastService } from '../_services';
+import { BackendMessage, AVState } from '../_models';
+import { BackendwsService,  } from '../_services';
+import { ChromeCastStatus } from '../_models';
+import { MqttService } from 'ngx-mqtt';
 
 @Component({
   selector: 'app-remotectrl',
@@ -29,8 +28,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
 
   constructor(
     private chrome: ChromeCastService,
-    private avstateService: AvstateService,
-    private domoticz: DomoticzService,
+    private mqtt: MqttService,
     private backend: BackendwsService) { }
 
   ngOnInit() {
@@ -43,10 +41,14 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     this.buttons.push(new Button(4, 15, IconType.scene));
 
     this.enable(IconType.volume);
-    this.chromeSubscription = this.chrome.getStatus().subscribe(d => this.handleState(d));
-    this.avsub = this.avstateService.getState()
-        .subscribe(val => this.updateState(val),
-                   error => this.error = error);
+    this.chromeSubscription = this.mqtt.observe('dashboard/chromecast/#').subscribe((data) => {
+      const d = JSON.parse(data.payload.toString()) as ChromeCastStatus;
+      this.handleState(d);
+    });
+    this.avsub = this.mqtt.observe('dashboard/avstate/#').subscribe((data) => {
+      const d = JSON.parse(data.payload.toString());
+      this.updateState(d.activityName);
+    });
   }
 
   handleState(state: ChromeCastStatus) {
@@ -80,15 +82,15 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateState(val: AVState) {
-    this.currentScene = val.status.scene;
+  private updateState(val: string) {
+    this.currentScene = val;
 /*    if (val.status.scene.includes('Stream')) {
       this.enable(IconType.media);
     } else {
       this.disable(IconType.media);
     }
 */
-    if (val.status.scene === 'PowerOff') {
+    if (val === 'PowerOff') {
       this.disable(IconType.volume);
       this.disable(IconType.scene);
     } else {
@@ -131,10 +133,6 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
           this.chrome.pause();
           break;
         case 15:
-          const scene: Device = {
-            idx: 124 // Power off in domoticz
-          }
-          this.domoticz.switchScene(scene)
           // Power off
           break;
       }

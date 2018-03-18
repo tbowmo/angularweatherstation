@@ -11,4 +11,5 @@ export class ChromeCastStatus {
     skip_fwd =  false;
     skip_bck = false;
     pause = false;
+    id = '';
 }

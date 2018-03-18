@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChromeCastService } from '../chrome-cast.service';
-import { ChromeCastStream } from '../chrome-cast-stream';
+import { ChromeCastService } from '../_services';
+import { ChromeCastStream } from '../_models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChromeCastStatus } from '../chrome-cast-status';
+import { ChromeCastStatus } from '../_models';
 import { Subscription } from 'rxjs/Subscription';
 @Component({
   template: `
