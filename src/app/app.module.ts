@@ -9,7 +9,6 @@ import { StreamsComponent } from './streams/streams.component';
 import { SensorComponent } from './sensor/sensor.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChromeStateComponent } from './chrome-state/chrome-state.component';
-import { BackendwsService } from './_services';
 import { SceneComponent } from './scene/scene.component';
 import { ConfService } from './_services';
 import { HouseComponent } from './house/house.component';
@@ -21,6 +20,9 @@ import { ChromeCastService } from './_services';
 import { LOCALE_ID } from '@angular/core';
 import { MqttService, MqttModule } from 'ngx-mqtt';
 import { environment } from 'environments/environment';
+import { RemoteService } from './_services';
+import { SensorService } from './_services';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { environment } from 'environments/environment';
     RemotectrlComponent,
   ],
   imports: [
+    MomentModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
@@ -53,7 +56,7 @@ import { environment } from 'environments/environment';
   })
   ],
   providers: [ /*{provide: LOCALE_ID, useValue: "da"},*/
-  BackendwsService, ConfService, TimeoutService, ChromeCastService ],
+  ConfService, TimeoutService, ChromeCastService, RemoteService, SensorService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

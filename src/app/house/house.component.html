@@ -1,6 +1,6 @@
-<ng-template ngFor let-s [ngForOf]="sensors">
+<ng-template ngFor let-s [ngForOf]="rooms| async">
   <div class="sensor s4">
-    <div class="value v2"><span>{{s.Temp}}</span>&deg; / <span>{{s.Humidity}}</span>%</div>
-    <div class="label">{{s.Name}}-{{s.LastUpdate}}</div>
+    <div class="value v2"><span>{{s.temperature}}</span>&deg; / <span>{{s.humidity}}</span>%</div>
+    <div class="label">{{s.name}} - {{s.timestamp | amCalendar}}</div>
   </div>
 </ng-template>

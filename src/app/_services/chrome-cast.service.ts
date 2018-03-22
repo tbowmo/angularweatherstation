@@ -1,5 +1,3 @@
-import { BackendMessage } from '../_models';
-import { BackendwsService } from './backendws.service';
 import { ChromeCastStatus } from '../_models';
 import { ChromeCastStream } from '../_models';
 import { ConfService } from './conf.service';
@@ -28,56 +26,6 @@ export class ChromeCastService {
       this.mqtt.observe('chromecast/+/media').subscribe((data) => {
         const chrome: ChromeCastStatus = JSON.parse(data.payload.toString()) as ChromeCastStatus;
         this._chromeSubject.next(chrome);
-      });
-    }
-
-    getStreams(type: string): Observable<ChromeCastStream[]> {
-        const url = this.conf.chromeUrl + type + '/list';
-        return this.http.get<ChromeCastStream[]>(url);
-    }
-
-    public playStream(stream: ChromeCastStream, device: string) {
-        const url = this.conf.chromeUrl + device + '/play/' + stream.id;
-        return this.http.get(url).toPromise();
-    }
-
-    /**
-     * Pause current playing item
-     * @return {[type]} [description]
-     */
-    public pause() {
-      const url = this.conf.chromeUrl + this.deviceType + '/pause';
-      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
-        this._chromeSubject.next(data);
-      });
-    }
-
-    /**
-     * Starts playing again, after a pause has been issued
-     * @return {none}
-     */
-    public play() {
-      const url = this.conf.chromeUrl + this.deviceType + '/play';
-      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
-        this._chromeSubject.next(data);
-      });
-    }
-
-    /**
-     * Skips to next track (if supported)
-     * @return {none}
-     */
-    public next() {
-      const url = this.conf.chromeUrl + this.deviceType + '/skip';
-      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
-        this._chromeSubject.next(data);
-      });
-    }
-
-    public previous() {
-      const url = this.conf.chromeUrl + this.deviceType + '/previous';
-      this.http.get<ChromeCastStatus>(url).toPromise().then((data) => {
-        this._chromeSubject.next(data);
       });
     }
 

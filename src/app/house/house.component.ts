@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { SensorService } from '../_services';
+import { Observable } from 'rxjs/Rx';
+import { Room } from '../_models';
 
 @Component({
   templateUrl: './house.component.html'
 })
 
 export class HouseComponent implements OnInit {
-  sub: Subscription;
   errorMessage: any;
+  rooms: Observable<Room[]>;
 
-  constructor() { }
+  constructor(
+    private sensors: SensorService
+  ) { }
 
   ngOnInit() {
+    this.rooms = this.sensors.getRooms();
   }
 }
