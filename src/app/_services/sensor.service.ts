@@ -22,6 +22,7 @@ export class SensorService {
         RoomMock.map(value => {
             const temp = `dashboard/sensors/${value.sensorId}/+/+/+/0`;
             const humidity = `dashboard/sensors/${value.sensorId}/+/+/+/1`;
+            const timestamp = `dashboard/timestamp/${value.sensorId}/+/+/+/0`;
             this.mqtt.observe(temp).first().subscribe((result) => {
                 value.temperature = Number(result.payload.toString());
             });
@@ -30,10 +31,10 @@ export class SensorService {
                 value.humidity = Number(result.payload.toString());
             });
             this.mqtt.observables[humidity] = null;
-            this.mqtt.observe(temp + '/time').first().subscribe((result) => {
-                value.timestamp = new Date(Number(result.payload.toString()) * 1000);
+            this.mqtt.observe(timestamp).first().subscribe((result) => {
+                value.timestamp = new Date(Number(result.payload.toString()));
             });
-            this.mqtt.observables[temp + '/time'] = null;
+            this.mqtt.observables[timestamp] = null;
         });
         return Observable.of(RoomMock);
     }

@@ -4,10 +4,10 @@ import { Observable } from 'rxjs/Rx';
 import { Room } from '../_models';
 
 @Component({
-  templateUrl: './house.component.html'
+  templateUrl: './tab-house.component.html'
 })
 
-export class HouseComponent implements OnInit {
+export class TabHouseComponent implements OnInit {
   errorMessage: any;
   rooms: Observable<Room[]>;
 

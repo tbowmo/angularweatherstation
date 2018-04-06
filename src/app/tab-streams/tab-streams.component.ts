@@ -15,7 +15,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
   styles: ['.grey {color:grey;}']
 })
 
-export class StreamsComponent implements OnInit, OnDestroy {
+export class TabStreamsComponent implements OnInit, OnDestroy {
   streams: Observable<ChromeCastStream[]>;
   errorMessage: any;
   routeSub: Subscription;

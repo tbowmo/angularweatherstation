@@ -2,7 +2,7 @@ export class ChromeCastStatus {
     player_state = '';
     title = '';
     album = '';
-    chromeApp = '';
+    chrome_app = '';
     content = '';
     media = '';
     artist = '';

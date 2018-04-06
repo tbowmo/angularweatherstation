@@ -1,17 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { StreamsComponent } from './streams/streams.component';
+import { TabStreamsComponent } from './tab-streams/tab-streams.component';
 import { SensorComponent } from './sensor/sensor.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChromeStateComponent } from './chrome-state/chrome-state.component';
-import { SceneComponent } from './scene/scene.component';
+import { TabSceneComponent } from './tab-scene/tab-scene.component';
 import { ConfService } from './_services';
-import { HouseComponent } from './house/house.component';
+import { TabHouseComponent } from './tab-house/tab-house.component';
 import { TruncatePipe } from './_pipes';
 import { TruncateHeadPipe } from './_pipes';
 import { TimeoutService } from './_services';
@@ -23,31 +23,44 @@ import { environment } from 'environments/environment';
 import { RemoteService } from './_services';
 import { SensorService } from './_services';
 import { MomentModule } from 'angular2-moment';
+import { MatIconModule, MatIconRegistry, MatSliderModule, MatSlideToggleModule } from '@angular/material';
+import { MatCardModule } from '@angular/material';
+import { LightDimmerComponent } from './light-dimmer/light-dimmer.component';
+import { TabLightsComponent } from './tab-lights/tab-lights.component';
+import { LightMoodComponent } from './light-mood/light-mood.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StreamsComponent,
+    TabStreamsComponent,
     SensorComponent,
     DashboardComponent,
     ChromeStateComponent,
-    SceneComponent,
-    HouseComponent,
+    TabSceneComponent,
+    TabHouseComponent,
     TruncatePipe,
     TruncateHeadPipe,
     RemotectrlComponent,
+    LightDimmerComponent,
+    TabLightsComponent,
+    LightMoodComponent
   ],
   imports: [
     MomentModule,
+    MatIconModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatCardModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
     {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {path: 'dashboard',  component: DashboardComponent},
-    {path: 'streams/:device', component: StreamsComponent},
-    {path: 'scene', component: SceneComponent},
-    {path: 'house', component: HouseComponent},
+    {path: 'streams/:device', component: TabStreamsComponent},
+    {path: 'scene', component: TabSceneComponent},
+    {path: 'house', component: TabHouseComponent},
+    {path: 'lights', component: TabLightsComponent},
     {path: '**', redirectTo: 'dashboard'}
   ]),
   MqttModule.forRoot({
@@ -59,7 +72,12 @@ import { MomentModule } from 'angular2-moment';
   ConfService, TimeoutService, ChromeCastService, RemoteService, SensorService ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
+    matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg'));
+    // Or whatever path you placed mdi.svg at
+  }
+}
 
 export function mqttServiceFactory() {
   return new MqttService(environment.MQTT_SERVICE_OPTIONS);

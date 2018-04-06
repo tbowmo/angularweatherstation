@@ -1,3 +1,28 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://www.google.com/design/spec/style/color.html
+$dash-app-primary: mat-palette($mat-grey);
+$dash-app-accent:  mat-palette($mat-orange, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$dash-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$dash-app-theme: mat-dark-theme($dash-app-primary, $dash-app-accent, $dash-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($dash-app-theme);
+
 body, html {
 	background: #000;
 }
@@ -39,6 +64,11 @@ div#cnt {
 	line-height: 75px;
 	font-size: 55px;
 	color: darkorange;
+}
+
+
+.light .value {
+	height: 180px;
 }
 
 .menu {
@@ -107,3 +137,14 @@ a.active, a.active:visited {
 	height: 90px;
 	width: 126px;
 }
+
+.tickerContainer{
+	overflow-x: hidden;
+	overflow-y: scroll;
+	white-space: nowrap;
+ }
+ #ghost{
+	 display: inline-block;
+	 height: 0;
+	 position: absolute;
+ }

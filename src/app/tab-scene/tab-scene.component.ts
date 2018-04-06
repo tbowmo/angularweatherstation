@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
   </div>`
 })
 
-export class SceneComponent implements OnInit {
+export class TabSceneComponent implements OnInit {
   scenes: Observable<AVScene[]>;
 
   constructor(

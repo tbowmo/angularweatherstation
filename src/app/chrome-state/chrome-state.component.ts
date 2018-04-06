@@ -38,7 +38,7 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
 
   tickerFunc(tick) {
     if (this.chromeStatus !== undefined) {
-      if (this.chromeStatus.chromeApp ===  'TIDAL') {
+      if (this.chromeStatus.chrome_app ===  'TIDAL') {
         this.tidalTicker();
       }
     }
@@ -64,17 +64,18 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
   }
 
   handleState(state: ChromeCastStatus) {
-    if (state.chromeApp !== 'None' && state.chromeApp !== 'Backdrop') {
+    if (state.chrome_app !== 'None' && state.chrome_app !== 'Backdrop') {
       this.chromeStatus = state;
     } else {
-      this.chromeStatus.chromeApp = '';
+      this.chromeStatus.chrome_app = '';
       this.chromeStatus.title = '';
     }
-    if (this.chromeStatus.chromeApp === 'TIDAL') {
+    console.log(this.chromeStatus);
+    if (this.chromeStatus.chrome_app === 'TIDAL') {
       this.tidalTick = 0;
       this.tidalTicker();
     } else {
-      this.device = this.chromeStatus.chromeApp;
+      this.device = this.chromeStatus.chrome_app;
       this.title = this.chromeStatus.title;
     }
   }

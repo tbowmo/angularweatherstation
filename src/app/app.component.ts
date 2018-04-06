@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       {label: 'TV', target: ['streams', 'video'], css: ''},
       {label: 'Scene', target: ['scene'], css: ''},
       {label: 'Huset', target: ['house'], css: ''},
-      {label: '', target: [''], css: ''},
+      {label: 'Lys', target: ['lights'], css: ''},
     ];
     moment().locale('dk');
     this.time = moment().format('HH:mm');

@@ -54,7 +54,6 @@ export class SensorComponent implements OnInit, OnDestroy {
       child = this.child.toString();
     }
     this.filter = `dashboard/sensors/${this.id}/${child}/1/+/${this.type}`;
-    console.log(this.filter);
     this.sensorSubscription = this.mqtt.observe(this.filter).subscribe((data) => {
       this.value = Number(data.payload);
     });

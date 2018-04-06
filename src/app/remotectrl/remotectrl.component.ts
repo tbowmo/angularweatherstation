@@ -41,11 +41,12 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     this.buttons.push(new Button(4, 15, IconType.scene));
 
     this.enable(IconType.volume);
-    this.chromeSubscription = this.mqtt.observe('dashboard/chromecast/#').subscribe((data) => {
+    this.chromeSubscription = this.mqtt.observe('chromecast/+/media').subscribe((data) => {
       const d = JSON.parse(data.payload.toString()) as ChromeCastStatus;
+      console.log(d);
       this.handleState(d);
     });
-    this.avsub = this.mqtt.observe('dashboard/avstate/#').subscribe((data) => {
+    this.avsub = this.mqtt.observe('avctrl/out/scene/#').subscribe((data) => {
       const d = JSON.parse(data.payload.toString());
       this.updateState(d.activityName);
     });
@@ -68,7 +69,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     } else {
       this.disable(IconType.media_pause);
     }
-    if ((state.chromeApp !== 'Radio') && (state.chromeApp !== 'Backdrop') && (this.currentScene.includes('Stream'))) {
+    if ((state.chrome_app !== 'Radio') && (state.chrome_app !== 'Backdrop') && (this.currentScene.includes('Stream'))) {
       this.enable(IconType.media);
     } else {
       this.disable(IconType.media);
@@ -147,5 +148,4 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 }

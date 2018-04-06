@@ -13,6 +13,7 @@ export class RemoteService {
         private http: HttpClient,
         private conf: ConfService
     ) {}
+
     public setAVState(state: AVScene) {
         this.mqtt.unsafePublish('avctrl/in/scene', state.mqttName, {retain: false, qos: 2});
     }
@@ -30,31 +31,39 @@ export class RemoteService {
         if (stream !== undefined) {
             this.mqtt.unsafePublish('chromecast/play', JSON.stringify(stream), {retain: false, qos: 2});
         } else {
-            this.mqtt.unsafePublish('avctrl/in/control/play', '', {retain: false, qos: 2});
+            this.sendRemoteCmd('play');
         }
     }
 
+    private sendRemoteCmd(cmd: string): void {
+        this.mqtt.unsafePublish('avctrl/in/control', cmd, {retain: false, qos: 2});
+    }
+
     public pause() {
-        this.mqtt.unsafePublish('avctrl/in/control/pause', '');
+        this.sendRemoteCmd('pause');
     }
 
     public next() {
-        this.mqtt.unsafePublish('avctrl/in/control/next', '');
+        this.sendRemoteCmd('fwd');
+    }
+
+    public stop() {
+        this.sendRemoteCmd('stop');
     }
 
     public previous() {
-        this.mqtt.unsafePublish('avctrl/in/control/previous', '');
+        this.sendRemoteCmd('rev');
     }
 
     public mute() {
-        this.mqtt.unsafePublish('avctrl/in/control/mute', '');
+        this.sendRemoteCmd('mute');
     }
 
     public volumeUp() {
-        this.mqtt.unsafePublish('avctrl/in/control/volumeup', '');
+        this.sendRemoteCmd('volumeup');
     }
 
     public volumeDown() {
-        this.mqtt.unsafePublish('avctrl/in/control/volumedown', '');
+        this.sendRemoteCmd('volumedown');
     }
 }

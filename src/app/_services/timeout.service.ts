@@ -15,7 +15,7 @@ export class TimeoutService {
       this.sub.unsubscribe();
       this.sub = null;
     }
-    this.timer = Observable.timer(10000);
+    this.timer = Observable.timer(20000);
     this.sub = this.timer.subscribe(t => this.tickerFunc(t) );
   }
 
@@ -27,7 +27,8 @@ export class TimeoutService {
   }
 
   ResetTimeout() {
-
+    this.DisableTimeout();
+    this.SetTimeout();
   }
 
   DisableTimeout() {
