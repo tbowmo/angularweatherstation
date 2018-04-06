@@ -1,0 +1,9 @@
+<div class="sensor s3">
+    <div class="value">
+        <mat-slide-toggle (change)="toggle($event)" [(checked)]="state.on"></mat-slide-toggle>
+        <mat-slider (change)="slide($event)" min="0" max="100" [(value)]="state.brightness"></mat-slider>
+    </div>
+    <div class="label">
+        {{label}}
+    </div>
+</div>
