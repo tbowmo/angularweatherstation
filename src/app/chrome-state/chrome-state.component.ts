@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChromeCastStatus } from '../_models';
 import { ChromeCastService } from '../_services';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable, Subscription, timer } from 'rxjs';
 import { MqttService } from 'ngx-mqtt';
 
 @Component({
@@ -26,7 +26,7 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      this.timer = Observable.timer(2000, 5000);
+      this.timer = timer(2000, 5000);
       // subscribing to a observable returns a subscription object
       this.sub = this.timer.subscribe(t => this.tickerFunc(t));
       this.chromeStatus = new ChromeCastStatus();

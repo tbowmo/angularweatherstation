@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription, timer } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class TimeoutService {
       this.sub.unsubscribe();
       this.sub = null;
     }
-    this.timer = Observable.timer(20000);
+    this.timer = timer(20000);
     this.sub = this.timer.subscribe(t => this.tickerFunc(t) );
   }
 

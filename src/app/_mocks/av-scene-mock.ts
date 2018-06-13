@@ -3,12 +3,12 @@ import { AVScene } from '../_models';
 export const AVSceneMock: AVScene[] = [
     {
         mqttName: 'video',
-        name: 'Video',
+        name: 'Stream Video',
         selected: false
     },
     {
         mqttName: 'audio',
-        name: 'Audio',
+        name: 'Stream Audio',
         selected: false
     },
     {

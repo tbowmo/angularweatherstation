@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MqttService } from 'ngx-mqtt';
 import { AVScene, ChromeCastStream } from '../_models';
 import { AVSceneMock } from '../_mocks';
-import { Observable } from 'rxjs/Rx';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ConfService } from './conf.service';
 
@@ -19,7 +19,7 @@ export class RemoteService {
     }
 
     public getAVScenes(): Observable<AVScene[]> {
-        return Observable.of(AVSceneMock);
+        return of(AVSceneMock);
     }
 
     public getStreams(type: string): Observable<ChromeCastStream[]> {

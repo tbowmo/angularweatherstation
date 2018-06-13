@@ -63,10 +63,7 @@ import { LightMoodComponent } from './light-mood/light-mood.component';
     {path: 'lights', component: TabLightsComponent},
     {path: '**', redirectTo: 'dashboard'}
   ]),
-  MqttModule.forRoot({
-    provide: MqttService,
-    useFactory: mqttServiceFactory
-  })
+  MqttModule.forRoot(environment.MQTT_SERVICE_OPTIONS)
   ],
   providers: [ /*{provide: LOCALE_ID, useValue: "da"},*/
   ConfService, TimeoutService, ChromeCastService, RemoteService, SensorService ],
@@ -79,6 +76,3 @@ export class AppModule {
   }
 }
 
-export function mqttServiceFactory() {
-  return new MqttService(environment.MQTT_SERVICE_OPTIONS);
-}

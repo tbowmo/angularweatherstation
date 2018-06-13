@@ -1,3 +1,4 @@
+/*
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RemotectrlComponent } from './remotectrl.component';
@@ -23,3 +24,4 @@ describe('RemotectrlComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+*/

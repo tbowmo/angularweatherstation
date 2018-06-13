@@ -1,10 +1,10 @@
-import { MqttServiceOptions } from 'ngx-mqtt';
+import { IMqttServiceOptions } from 'ngx-mqtt';
 
-const mqtt: MqttServiceOptions = {
-  hostname: 'juletraesfoden.dk',
+const mqtt: IMqttServiceOptions = {
+  hostname: 'mqtt.juletraesfoden.dk',
   port: 443,
   protocol: 'wss',
-  path: '/mqtt'
+  path: ''
 };
 
 export const environment = {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SensorService } from '../_services';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { Room } from '../_models';
 
 @Component({

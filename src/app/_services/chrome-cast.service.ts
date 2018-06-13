@@ -3,11 +3,9 @@ import { ChromeCastStream } from '../_models';
 import { ConfService } from './conf.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable ,  ReplaySubject ,  Subscription } from 'rxjs';
+
+
 import { MqttService } from 'ngx-mqtt';
 
 @Injectable()

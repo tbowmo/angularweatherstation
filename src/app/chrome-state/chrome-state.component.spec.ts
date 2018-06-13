@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChromeStateComponent } from './chrome-state.component';
 
@@ -23,3 +23,4 @@ describe('ChromeStateComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+*/

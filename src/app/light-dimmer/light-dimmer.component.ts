@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MqttService } from 'ngx-mqtt';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
 import { LightState} from '../_models';
 
 @Component({

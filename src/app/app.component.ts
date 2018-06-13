@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, timer } from 'rxjs';
 import { MenuLink } from './_models';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
@@ -13,6 +13,7 @@ const screenfull = require('screenfull');
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
+
 export class AppComponent implements OnInit {
   ticks = 0;
   time = '00:00';
@@ -35,8 +36,7 @@ export class AppComponent implements OnInit {
     moment().locale('dk');
     this.time = moment().format('HH:mm');
     this.date = moment().format('MMMM Do YYYY');
-    const timer = Observable.timer(0, 1000);
-    timer.subscribe(() => {
+    timer(0, 1000).subscribe(() => {
       this.time = moment().format('HH:mm');
       this.date = moment().format('dddd Do MMMM - YYYY');
     });

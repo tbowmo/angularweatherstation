@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, timer } from 'rxjs';
 
 export enum IconType {
   media,
@@ -55,7 +55,7 @@ export class Button {
   click(): boolean {
     if (this._iconset > 0) {
       this._iconset = 2;
-      Observable.timer(200).toPromise().then(i => {
+      timer(200).toPromise().then(i => {
         this._iconset = 1;
       });
       return true;

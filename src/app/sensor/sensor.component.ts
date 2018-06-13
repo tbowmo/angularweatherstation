@@ -4,9 +4,8 @@ import {
   OnDestroy,
   OnInit
   } from '@angular/core';
-import { MqttMessage, MqttService } from 'ngx-mqtt';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { IMqttMessage, MqttService } from 'ngx-mqtt';
+import { Observable ,  Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sensor',

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription} from 'rxjs/Subscription';
+import { Observable ,  Subscription} from 'rxjs';
 import { Button, IconType } from './button';
 import { ChromeCastService } from '../_services';
 import { ChromeCastStatus } from '../_models';

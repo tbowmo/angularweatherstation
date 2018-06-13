@@ -3,7 +3,7 @@ import { ChromeCastService, RemoteService } from '../_services';
 import { ChromeCastStatus } from '../_models';
 import { ChromeCastStream } from '../_models';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   template: `
@@ -34,7 +34,7 @@ export class TabStreamsComponent implements OnInit, OnDestroy {
 
       this.device = params['device'];
 
-      this.streamService.getStatus().first()
+      this.streamService.getStatus()
         .subscribe(
           (result) => { this.status = result; }
         );
