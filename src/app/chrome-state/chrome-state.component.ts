@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChromeCastStatus } from '../_models';
-import { ChromeCastService } from '../_services';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { MqttService } from 'ngx-mqtt';
 
 @Component({
@@ -28,7 +27,7 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
   ngOnInit() {
       this.timer = timer(2000, 5000);
       // subscribing to a observable returns a subscription object
-      this.sub = this.timer.subscribe(t => this.tickerFunc(t));
+      this.sub = this.timer.subscribe(() => this.tickerFunc());
       this.chromeStatus = new ChromeCastStatus();
       this.subscribeStream = this.mqtt.observe('chromecast/+/media').subscribe((data) => {
         const d = JSON.parse(data.payload.toString()) as ChromeCastStatus;
@@ -36,7 +35,7 @@ export class ChromeStateComponent implements OnInit, OnDestroy {
       });
     }
 
-  tickerFunc(tick) {
+  tickerFunc() {
     if (this.chromeStatus !== undefined) {
       if (this.chromeStatus.chrome_app ===  'TIDAL') {
         this.tidalTicker();

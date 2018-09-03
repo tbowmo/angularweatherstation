@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription} from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { RemoteService } from '../_services';
 import { AVScene } from '../_models';
 import { Observable } from 'rxjs';
@@ -22,8 +21,6 @@ export class TabSceneComponent implements OnInit, OnDestroy {
   filter: string;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private remote: RemoteService,
     private mqtt: MqttService
   ) {}

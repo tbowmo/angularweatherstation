@@ -1,24 +1,21 @@
-import { ChromeCastStatus, Room } from '../_models';
-import { ChromeCastStream } from '../_models';
+import { Room } from '../_models';
 import { ConfService } from './conf.service';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ReplaySubject ,  Subscription } from 'rxjs';
-
-
 import { MqttService } from 'ngx-mqtt';
-import { RoomMock } from '../_mocks/room-mock';
 
 @Injectable()
 export class SensorService {
 
     constructor(
-        private mqtt: MqttService
-    ) {}
+        private mqtt: MqttService,
+        private conf: ConfService
+    ) { }
 
     public getRooms(): Observable<Room[]> {
-        RoomMock.map(value => {
+        let data: Room[]
+        data = this.conf.getRooms;
+        data.map(value => {
             const temp = `dashboard/sensors/${value.sensorId}/+/+/+/0`;
             const humidity = `dashboard/sensors/${value.sensorId}/+/+/+/1`;
             const timestamp = `dashboard/timestamp/${value.sensorId}/+/+/+/0`;
@@ -35,6 +32,6 @@ export class SensorService {
             });
             this.mqtt.observables[timestamp] = null;
         });
-        return of(RoomMock);
+        return of(data);
     }
 }

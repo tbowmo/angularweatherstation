@@ -1,10 +1,10 @@
+import * as moment from 'moment';
 import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
 import { MenuLink } from './_models';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import 'moment/locale/da';
 import { TimeoutService } from './_services';
+import { timer } from 'rxjs';
+import 'moment/locale/da';
 
 declare const require: any;
 const screenfull = require('screenfull');

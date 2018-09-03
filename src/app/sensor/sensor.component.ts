@@ -4,8 +4,8 @@ import {
   OnDestroy,
   OnInit
   } from '@angular/core';
-import { IMqttMessage, MqttService } from 'ngx-mqtt';
-import { Observable ,  Subscription } from 'rxjs';
+import { MqttService } from 'ngx-mqtt';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sensor',
@@ -48,10 +48,7 @@ export class SensorComponent implements OnInit, OnDestroy {
     if (+this.id === 0) {
       return;
     }
-    let child = '+';
-    if (this.child !== undefined) {
-      child = this.child.toString();
-    }
+    const child = this.child || '+';
     this.filter = `dashboard/sensors/${this.id}/${child}/1/+/${this.type}`;
     this.sensorSubscription = this.mqtt.observe(this.filter).subscribe((data) => {
       this.value = Number(data.payload);

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MqttService } from 'ngx-mqtt';
 import { AVScene, ChromeCastStream } from '../_models';
-import { AVSceneMock } from '../_mocks';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ConfService } from './conf.service';
@@ -12,14 +11,14 @@ export class RemoteService {
         private mqtt: MqttService,
         private http: HttpClient,
         private conf: ConfService
-    ) {}
+    ) { }
 
     public setAVState(state: AVScene) {
-        this.mqtt.unsafePublish('avctrl/in/scene', state.mqttName, {retain: false, qos: 2});
+        this.mqtt.unsafePublish('avctrl/in/scene', state.mqttName, { retain: false, qos: 2 });
     }
 
     public getAVScenes(): Observable<AVScene[]> {
-        return of(AVSceneMock);
+        return of(this.conf.getScenes);
     }
 
     public getStreams(type: string): Observable<ChromeCastStream[]> {
@@ -29,14 +28,14 @@ export class RemoteService {
 
     public play(stream?: ChromeCastStream) {
         if (stream !== undefined) {
-            this.mqtt.unsafePublish('chromecast/play', JSON.stringify(stream), {retain: false, qos: 2});
+            this.mqtt.unsafePublish('chromecast/play', JSON.stringify(stream), { retain: false, qos: 2 });
         } else {
             this.sendRemoteCmd('play');
         }
     }
 
     private sendRemoteCmd(cmd: string): void {
-        this.mqtt.unsafePublish('avctrl/in/control', cmd, {retain: false, qos: 2});
+        this.mqtt.unsafePublish('avctrl/in/control', cmd, { retain: false, qos: 2 });
     }
 
     public pause() {

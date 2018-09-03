@@ -1,0 +1,56 @@
+{
+    "mqtt": {
+        "hostname": "mqtt.juletraesfoden.dk",
+        "port": 443,
+        "protocol": "wss",
+        "path": ""
+    },
+    "endpoints": {
+        "chromecast": "https://chrome.juletraesfoden.dk/"
+    },
+    "scenes": [
+        {
+            "mqttName": "video",
+            "name": "Stream Video",
+            "selected": false
+        },
+        {
+            "mqttName": "audio",
+            "name": "Stream Audio",
+            "selected": false
+        },
+        {
+            "mqttName": "wii",
+            "name": "WII",
+            "selected": false
+        },
+        {
+            "mqttName": "tv",
+            "name": "TV",
+            "selected": false
+        },
+        {
+            "mqttName": "off",
+            "name": "OFF",
+            "selected": false
+        }
+    ],
+    "rooms": [
+        {
+            "name": "stuen",
+            "sensorId": 10
+        },
+        {
+            "name": "Soveværelse",
+            "sensorId": 6
+        },
+        {
+            "name": "Kontor",
+            "sensorId": 200
+        },
+        {
+            "name": "Badeværelse",
+            "sensorId": 9
+        }
+    ]
+}

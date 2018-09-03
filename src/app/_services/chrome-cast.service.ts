@@ -1,9 +1,6 @@
 import { ChromeCastStatus } from '../_models';
-import { ChromeCastStream } from '../_models';
-import { ConfService } from './conf.service';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable ,  ReplaySubject ,  Subscription } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 
 import { MqttService } from 'ngx-mqtt';
@@ -11,23 +8,19 @@ import { MqttService } from 'ngx-mqtt';
 @Injectable()
 export class ChromeCastService {
 
-    private _chromeSubject: ReplaySubject<ChromeCastStatus>;
-    private connection: Subscription;
-    private device: string;
-    private deviceType: string;
+  private _chromeSubject: ReplaySubject<ChromeCastStatus>;
 
-    constructor (
-      private http: HttpClient,
-      private mqtt: MqttService,
-      private conf: ConfService) {
-      this._chromeSubject = new ReplaySubject(1);
-      this.mqtt.observe('chromecast/+/media').subscribe((data) => {
-        const chrome: ChromeCastStatus = JSON.parse(data.payload.toString()) as ChromeCastStatus;
-        this._chromeSubject.next(chrome);
-      });
-    }
+  constructor(
+    private mqtt: MqttService
+    ) {
+    this._chromeSubject = new ReplaySubject(1);
+    this.mqtt.observe('chromecast/+/media').subscribe((data) => {
+      const chrome: ChromeCastStatus = JSON.parse(data.payload.toString()) as ChromeCastStatus;
+      this._chromeSubject.next(chrome);
+    });
+  }
 
-    public getStatus(): Observable<ChromeCastStatus> {
-        return this._chromeSubject.asObservable();
-    }
+  public getStatus(): Observable<ChromeCastStatus> {
+    return this._chromeSubject.asObservable();
+  }
 }
