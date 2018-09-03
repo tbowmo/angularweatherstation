@@ -1,4 +1,5 @@
-import { Observable, timer } from 'rxjs';
+import { timer } from 'rxjs';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export enum IconType {
   media,
@@ -11,23 +12,28 @@ export enum IconType {
 
 export class Button {
   activity: number;
-  private _set: string[];
-  private _iconset: number;
 
-  set iconset(value: number) {
-    this._iconset = value;
-  }
-
-  private _icon: number;
-  set icon(value: number) {
-    this._icon = value - 1;
-  }
-
-  get useIcon(): boolean {
-    if (this._icon >= 0) {
-      return true;
+  _enabled: boolean;
+  set enabled(value: boolean) {
+    this._enabled = value;
+    if (value) {
+      this._style = 'grey';
+    } else {
+      this._style = 'darkslategrey';
     }
-    return false;
+  }
+  private _icon: IconDefinition;
+  set icon(value: IconDefinition) {
+    this._icon = value;
+  }
+
+  get icon() {
+    return this._icon;
+  }
+
+  private _style: string;
+  get style(): string {
+    return this._style;
   }
 
   private _icontype: IconType = IconType.media;
@@ -35,28 +41,19 @@ export class Button {
     return this._icontype;
   }
 
-  constructor(icon: number, activity: number, type: IconType) {
+  constructor(icon: IconDefinition, activity: number, type: IconType) {
     this._icontype = type;
-    this._icon = icon - 1;
     this.activity = activity;
-    this._set = ['icons-darkgrey.png', 'icons-grey.png', 'icons-orange.png'];
-    this._iconset = 0;
-  }
-
-  get left(): string {
-    return (this._icon * 126).toString() + 'px';
-  }
-
-  get background(): string {
-    return 'url("assets/' + this._set[this._iconset] + '") ' + '-' + (this._icon * 126).toString() + 'px -20px';
+    this._icon = icon;
+    this._style = 'grey'
   }
 
 
   click(): boolean {
-    if (this._iconset > 0) {
-      this._iconset = 2;
-      timer(200).toPromise().then(i => {
-        this._iconset = 1;
+    if (this._enabled) {
+      this._style = 'orange';
+      timer(200).toPromise().then(() => {
+        this._style = 'grey';
       });
       return true;
     }

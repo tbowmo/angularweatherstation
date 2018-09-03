@@ -1,43 +1,39 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable ,  Subscription} from 'rxjs';
+import { Subscription} from 'rxjs';
 import { Button, IconType } from './button';
-import { ChromeCastService } from '../_services';
 import { ChromeCastStatus } from '../_models';
 import { MqttService } from 'ngx-mqtt';
 import { RemoteService } from '../_services';
-
+import { faPlay, faForward, faBackward, faPowerOff, faPause, faVolumeUp, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-remotectrl',
   template: `
   <div *ngFor="let button of buttons; let i = index;" class="sensor s6" (click)="activate(button, i)">
     <div class="value">
-      <img src="assets/spacer.png" class="valueicon" [ngStyle]="{'left':button.left, 'background':button.background }"/>
+      <fa-icon [icon]="button.icon" [ngStyle]="{color:button.style}"></fa-icon>
     </div>
   </div>`
 })
 
 export class RemotectrlComponent implements OnInit, OnDestroy {
-
   buttons: Button[];
   private chromeSubscription: Subscription;
-  private error: any;
   private avsub: Subscription;
   private currentScene = '';
 
   constructor(
-    private chrome: ChromeCastService,
     private mqtt: MqttService,
     private remote: RemoteService
   ) { }
 
   ngOnInit() {
     this.buttons = Array<Button>();
-    this.buttons.push(new Button(7, 10, IconType.volume));
-    this.buttons.push(new Button(8, 11, IconType.volume));
-    this.buttons.push(new Button(6, 12, IconType.media_back));
-    this.buttons.push(new Button(3, 13, IconType.media_pause));
-    this.buttons.push(new Button(5, 14, IconType.media_fwd));
-    this.buttons.push(new Button(4, 15, IconType.scene));
+    this.buttons.push(new Button(faVolumeDown, 10, IconType.volume));
+    this.buttons.push(new Button(faVolumeUp, 11, IconType.volume));
+    this.buttons.push(new Button(faBackward, 12, IconType.media_back));
+    this.buttons.push(new Button(faPause, 13, IconType.media_pause));
+    this.buttons.push(new Button(faForward, 14, IconType.media_fwd));
+    this.buttons.push(new Button(faPowerOff, 15, IconType.scene));
 
     this.enable(IconType.volume);
     this.chromeSubscription = this.mqtt.observe('chromecast/+/media').subscribe((data) => {
@@ -74,10 +70,10 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
       this.disable(IconType.media);
     }
     if (state.player_state === 'PLAYING') {
-      this.buttons[3].icon = 2;
+      this.buttons[3].icon = faPause;
       this.buttons[3].activity = 16;
     } else {
-      this.buttons[3].icon = 3;
+      this.buttons[3].icon = faPlay;
       this.buttons[3].activity = 13;
     }
   }
@@ -104,7 +100,7 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
     this.avsub.unsubscribe();
   }
 
-  activate(button: Button, index: number) {
+  activate(button: Button) {
     if (button.click()) {
       switch (button.activity) {
         case 10:
@@ -133,17 +129,17 @@ export class RemotectrlComponent implements OnInit, OnDestroy {
   }
 
   enable(type: IconType) {
-    this.buttons.forEach((c, i, a) => {
+    this.buttons.forEach((_c, i, _a) => {
       if (this.buttons[i].iconType === type) {
-        this.buttons[i].iconset = 1;
+        this.buttons[i].enabled = true;
       }
     });
   }
 
   disable(type: IconType) {
-    this.buttons.forEach((c, i, a) => {
+    this.buttons.forEach((_c, i, _a) => {
       if (this.buttons[i].iconType === type) {
-        this.buttons[i].iconset = 0;
+        this.buttons[i].enabled = false;
       }
     });
   }
